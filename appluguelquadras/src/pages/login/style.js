@@ -1,9 +1,9 @@
 import {StyleSheet} from "react-native"
 
 const styles = StyleSheet.create({
-    Login:{
+    container:{
 
     },
 });
 
-export default Styles
+export default styles

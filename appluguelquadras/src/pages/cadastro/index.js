@@ -5,7 +5,7 @@ export default function Cadastro(){
     return(
         <View>
             <Text>
-                Pagina de ca 
+                Pagina de cadastro
             </Text>
         </View>
     )
