@@ -20,7 +20,7 @@ export default function Login({navigation}){
     // se logar faça
     let user = userCredential.user;            
                                     //recuperando o id
-    navigator.navigate("Cadastro", {idUser:user.uid})
+    navigator.navigate("Jogar", {idUser:user.uid})
   })
   .catch((error) => {
     setErrorLogin(true)
@@ -60,7 +60,7 @@ export default function Login({navigation}){
                                     size={24}
                                     color="#bdbdbd"
                                     />
-            <Text style={styles.warningAlert}>Invalid email or password</Text>
+            <Text style={styles.warningAlert}>Email ou senha invalidos</Text>
         </View>
         :
         <View/>
@@ -82,11 +82,11 @@ export default function Login({navigation}){
         }
 
         <Text style={styles.registration}>
-            Don't have a registration?
+            Não tem um cadastro?
             <Text style={styles.linkSubscribe}
-                onPress={() => navigation.navigate("Cadastro")}
+                onPress={() => navigation.navigate("BemVindo")}
                 >
-                    Subscribe Now....
+                    Se cadastre agora....
             </Text>
         </Text>
 

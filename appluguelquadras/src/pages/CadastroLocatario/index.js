@@ -7,15 +7,18 @@ import {MaterialCommunityIcons} from "@expo/vector-icons"
 
 
 
-export default function Cadastro({navigation}){
+export default function CadastroLocatario({navigation}){
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [nome, setNome] = useState("");
+    const [cnpj, setCNPJ] = useState("");
+    const [razaoSocial, setRazaoSocial] = useState("");
     //tentando logar em branco
     const [errorCadastro, setErrorCadastro] = useState("");
 
     const cadastrar = () => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
+        firebase.auth().createUserWithEmailAndPassword(email, password, nome, cnpj, razaoSocial)
         .then((userCredential) => {
           let user = userCredential.user; 
           navigation.navigate("Login", { idUser: user.uid })
@@ -33,17 +36,35 @@ export default function Cadastro({navigation}){
         
         <Text style={styles.title}>Criar nova conta</Text>
         <TextInput style={styles.input}
-                    placeholder="Qual seu melhor email ?"
+                    placeholder="entre com seu email"
                     type="text"
                     onChangeText={(text) =>setEmail(text)} 
                     value={email}/>
+                    
+     <TextInput style={styles.input}
+                    placeholder="entre com seu cnpj"
+                    type="text"
+                    onChangeText={(text) =>setCNPJ(text)} 
+                    value={cnpj}/>
+
+    <TextInput style={styles.input}
+                    placeholder="entre com a razao social"
+                    type="text"
+                    onChangeText={(text) =>setRazaoSocial(text)} 
+                    value={razaoSocial}/>
         
         <TextInput style={styles.input}
                     secureTextEntry={true}
-                    placeholder="Crie uma senha"
+                    placeholder="entre com sua senha"
                     type="text"
                     onChangeText={(text) =>setPassword(text)} 
                     value={password}/>
+        
+        <TextInput style={styles.input}
+                    placeholder="entre com seu nome"
+                    type="text"
+                    onChangeText={(text) =>setNome(text)} 
+                    value={nome}/>
 
 
         {errorCadastro === true
