@@ -14,13 +14,13 @@ export default function App() {
         <Stack.Screen
             name="Login"
             component={Login}
-            options={{headerTintColor:"#f92e6a"}}
+            options={{headerTintColor:"black"}}
             />
 
           <Stack.Screen
             name="Cadastro"
             component={Cadastro}
-            options={{headerTintColor:"#f92e6a"}}
+            options={{headerTintColor:"black"}}
             />
 
       </Stack.Navigator>

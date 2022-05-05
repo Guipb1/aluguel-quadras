@@ -1,21 +1,32 @@
 import React, {useState, useEffect} from 'react'
 import {View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView} from "react-native"
-//import firebase from "../../config/firebaseconfig"
+import firebase from "../../config/firebase"
 import styles from "./style"
-import {materialCommunityIcons} from "@expo/vector-icons"
+import {MaterialCommunityIcons} from "@expo/vector-icons"
 
 export default function Login({navigation}){
 
     //criando state do email e senha
     const [email, setEmail] = useState("");
-    const [senha, setSenha] = useState("");
+    const [password, setPassword] = useState("");
     //tentando logar em branco
     const [errorLogin, setErrorLogin] = useState("");
 
 
     //funcao de login
     const loginFirebase = ()=>{
-
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+    // se logar faça
+    let user = userCredential.user;            
+                                    //recuperando o id
+    navigator.navigate("Cadastro", {idUser:user.uid})
+  })
+  .catch((error) => {
+    setErrorLogin(true)
+    let errorCode = error.code;
+    let errorMessage = error.message;
+  });
     }
 
     useEffect (()=>{
@@ -39,8 +50,8 @@ export default function Login({navigation}){
                     secureTextEntry={true}
                     placeholder="enter your password"
                     type="text"
-                    onChangeText={(text) =>setSenha(text)} 
-                    value={senha}/>
+                    onChangeText={(text) =>setPassword(text)} 
+                    value={password}/>
 
         {errorLogin === true
         ?
@@ -54,7 +65,7 @@ export default function Login({navigation}){
         :
         <View/>
         }
-         { email === "" || senha === ""
+         { email === "" || password === ""
          ?
          <TouchableOpacity disabled={true}
                            style={styles.buttonLogin}
@@ -64,6 +75,7 @@ export default function Login({navigation}){
          </TouchableOpacity>
          :
          <TouchableOpacity style={styles.buttonLogin}
+                            onPress={loginFirebase}
                            >
                 <Text style={styles.textButtonLogin}>Login</Text>
          </TouchableOpacity>
