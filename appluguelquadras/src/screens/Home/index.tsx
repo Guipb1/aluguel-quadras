@@ -58,7 +58,7 @@ const Home: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <ScreenHeader username={user.name} />
+      <ScreenHeader username={user?.name} />
       <View style={styles.content}>
         <TouchableOpacity onPress={handleLogout}>
           <Text>Sair</Text>

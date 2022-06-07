@@ -15,6 +15,8 @@ export type UserProps = {
   id: string;
   name: string;
   email: string;
+  type: "BASIC" | "LOCATOR";
+  cnpj?: string;
 };
 
 export type AuthContextProps = {
@@ -61,7 +63,6 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     } catch (error) {
       Alert.alert("Falha ao realizar login");
       console.log(JSON.stringify(error));
-      throw error;
     } finally {
       setLoading(false);
     }

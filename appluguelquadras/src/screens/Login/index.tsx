@@ -31,11 +31,7 @@ export default function Login() {
 
   //funcao de login
   const handleLogin = async () => {
-    try {
       await login(email, password);
-    } catch (error) {
-      Alert.alert(error.message);
-    }
   };
 
   return (
