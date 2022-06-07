@@ -20,7 +20,7 @@ export default function Login({navigation}){
     // se logar faça
     let user = userCredential.user;            
                                     //recuperando o id
-    navigator.navigate("Jogar", {idUser:user.uid})
+    navigator.navigate("BemVindo", {idUser:user.uid})
   })
   .catch((error) => {
     setErrorLogin(true)
