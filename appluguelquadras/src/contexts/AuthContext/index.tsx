@@ -16,7 +16,7 @@ export type UserProps = {
   name: string;
   email: string;
   type: "BASIC" | "LOCATOR";
-  cnpj?: string;
+  // cnpj?: string;
 };
 
 export type AuthContextProps = {

@@ -42,7 +42,6 @@ export default function NewAccountLocator() {
           name,
           email,
           type:"LOCATOR",
-          cnpj
         };
         await setDoc(doc(firestoreInstance, "users", usercredential.user.uid), newUser);
 
@@ -69,13 +68,13 @@ export default function NewAccountLocator() {
         value={email}
       />
 
-       <TextInput
+       {/* <TextInput
         style={styles.input}
         placeholder="entre com seu cnpj"
         keyboardType="numbers-and-punctuation"
         onChangeText={(text) => setCNPJ(text)}
         value={cnpj}
-      />
+      /> */}
 
       {/* <TextInput
         style={styles.input}
