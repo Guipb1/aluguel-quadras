@@ -38,7 +38,8 @@
 
  # Tecnologias Utilizadas
  <ul>
- <li> <code> React.js </code> </li>
+ <li> <code> React-Native </code> </li>
+<li> <code> TypeScript</code> </li>
  <li> <code> Node.js </code> </li>
  <li> <code> Visual Studio Code </code> </li>
  <li> <code> Git </code> </li>
