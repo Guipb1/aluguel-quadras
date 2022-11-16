@@ -43,7 +43,7 @@
  <li> <code> Firebase </code> </li> 
  </ul>
  
- # Pessoas Desenvolvedoras do Projeto
+ # Desenvolvedores do Projeto
  [<img src="https://avatars.githubusercontent.com/u/43188745?v=4" width=115><br><sub>Guilherme Borges</sub>](https://github.com/guipb1) 
  
- [<img src="" width=115><br><sub>Felipe Macedo </sub>](https://github.com/felipenogarolli99) 
+ [<img src="https://avatars.githubusercontent.com/u/106127810?v=4" width=115><br><sub>Felipe Macedo </sub>](https://github.com/felipenogarolli99) 
