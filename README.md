@@ -22,11 +22,14 @@
  #  Funcionalidades do Projeto
  <ul>
  <li> Cadastro de locador </li>
- <li> Cadastro de locatario </li>  
+ <li> Cadastro de locatario </li> 
+ <li> Lotario adicionar quadras para locação </li>  
  <li> Visualizar quadras disponiveis </li>
  <li> Agendar horario da locação </li>
- <li> Visualizar as melhores quadras, com os melhores Scores </li>
+ <li> Gerenciar horario das quadras </li>
  <li> Realizar pagamento </li>
+ <li> Visualizar as melhores quadras, com os melhores Scores </li>
+ 
  </ul>
   
 
@@ -37,10 +40,9 @@
  <li> <code> Node.js </code> </li>
  <li> <code> Visual Studio Code </code> </li>
  <li> <code> Git </code> </li>
- <li> <code> Firebase </code> </li>
- <li> <code> Express.js </code> </li>  
+ <li> <code> Firebase </code> </li> 
  </ul>
  
  # Pessoas Desenvolvedoras do Projeto
- Felipe Macedo 
- Guilherme Borges
+ Felipe Macedo &&
+ Guilherme Borges [<img src="https://avatars.githubusercontent.com/u/43188658?v=4" width=115><br><sub>Heloise Bonato </sub>](https://github.com/guipb1) 
