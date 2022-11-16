@@ -44,5 +44,5 @@
  </ul>
  
  # Pessoas Desenvolvedoras do Projeto
- Felipe Macedo &&
- Guilherme Borges [<img src="https://avatars.githubusercontent.com/u/43188745?v=4" width=115><br><sub>Guilherme Borges </sub>](https://github.com/guipb1) 
+ [<img src="https://avatars.githubusercontent.com/u/43188745?v=4" width=115><br><sub>Guilherme Borges </sub>](https://github.com/guipb1) 
+ [<img src="https://avatars.githubusercontent.com/u/106127810?s=400&u=d46e3496d33c1445dfd9f88b11ecb3a679795b90&v=4" width=115><br><sub>Felipe Macedo </sub>](https://github.com/felipenogarolli99) 
