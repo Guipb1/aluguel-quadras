@@ -8,12 +8,14 @@
 <p> Esse projeto foi desenvolvido durante 2 semestres nas disciplinas de TCC 1 e 2. </p>
 
 # 📁 Instalação
-<p> Para executar o projeto Quadras de Aluguel em seu ambiente de desenvolvimento local é muito fácil. Certifique-se de ter o Git e o Node.js instalados e siga as instruções abaixo.</p>
+<p> Para executar o projeto Quadras de Aluguel em seu ambiente de desenvolvimento local é muito fácil. Certifique-se de ter o Git, Node.js, Expo CLI e Expo go instalado em seu celular, e siga as instruções abaixo.</p>
 <ol>
 <li> Clone o código-fonte </li>
 <code>git clone https://github.com/Guipb1/aluguel-quadras.git</code>
 <li> Instale as dependências de desenvolvimento </li>
-<code>yarn install</code>
+<code>npm install -g yarn</code>
+<code>yarn</code>
+<code>yarn add -g expo-cli</code>
 <li> Execute um servidor de desenvolvimento local </li>
  <code>yarn start </code>
  </ol>
