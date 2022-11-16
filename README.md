@@ -45,4 +45,4 @@
  
  # Pessoas Desenvolvedoras do Projeto
  Felipe Macedo &&
- Guilherme Borges [<img src="https://avatars.githubusercontent.com/u/43188658?v=4" width=115><br><sub>Heloise Bonato </sub>](https://github.com/guipb1) 
+ Guilherme Borges [<img src="https://avatars.githubusercontent.com/u/43188745?v=4" width=115><br><sub>Guilherme Borges </sub>](https://github.com/guipb1) 
