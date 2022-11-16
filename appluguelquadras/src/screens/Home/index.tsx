@@ -36,6 +36,11 @@ import stylesDark from "./stylesDark";
 import { Days, Rent } from "../../@types";
 import { PlaceDetailProps } from "../PlaceDetails";
 import BetterPlaces from "../../components/BetterPlaces";
+import {
+  allowPlaceUpdate,
+  getRateService,
+  sendAvaliation,
+} from "../../services/placeService";
 
 const Home: React.FC = () => {
   const theme = useColorScheme();
@@ -71,11 +76,8 @@ const Home: React.FC = () => {
 
   const getRate = async () => {
     try {
-      const query = await getDoc(
-        doc(firestoreInstance, "places", item?.placeId)
-      );
       let media = 0;
-      const data = query.data() as PlaceDetailProps;
+      const data = await getRateService(item);
       if (data.rating) {
         if (data.rating?.length > 0) {
           data.rating?.forEach((rate) => {
@@ -199,60 +201,7 @@ const Home: React.FC = () => {
   const allowPlace = async () => {
     setConfirmPlace(true);
     try {
-      const query = await getDoc(
-        doc(firestoreInstance, "places", item?.placeId)
-      );
-      const reserve = await getDoc(
-        doc(firestoreInstance, "reserves", item?.reserveId)
-      );
-      const data = query.data() as PlaceDetailProps;
-      const reserveData = reserve.data();
-      const { day } = reserveData;
-      const newDay = {
-        ...day,
-        status: "APROVADO",
-      };
-
-      const newReserve = {
-        ...reserveData,
-        day: newDay,
-      };
-
-      const [days] = data.availableTimes;
-      const novosDias = days.days.map((newDay) => {
-        if (newDay.day === item?.day.day) {
-          return {
-            ...newDay,
-            isRented: true,
-            userId: item.day.userId,
-            status: "APROVADO",
-          };
-        }
-        return newDay;
-      });
-
-      const novoAvailableTimes = data.availableTimes.map((teste) => {
-        if (teste.id === item?.availableTimeId) {
-          return {
-            ...teste,
-            days: novosDias,
-          };
-        }
-        return teste;
-      });
-
-      const placeUpdated: PlaceDetailProps = {
-        ...data,
-        availableTimes: novoAvailableTimes,
-      };
-      await updateDoc(
-        doc(firestoreInstance, "places", item?.placeId),
-        placeUpdated
-      );
-      await updateDoc(
-        doc(firestoreInstance, "reserves", item?.reserveId),
-        newReserve
-      );
+      await allowPlaceUpdate(item);
     } catch (error: any) {
       console.log("Error allow place: ", error);
     } finally {
@@ -262,34 +211,9 @@ const Home: React.FC = () => {
 
   const setRate = async () => {
     setIsSendAvaliation(true);
-    try {
-      const query = await getDoc(
-        doc(firestoreInstance, "places", item?.placeId)
-      );
-
-      const data = query.data() as PlaceDetailProps;
-
-      const newRate = data.rating;
-      newRate.push({
-        rate: myRate,
-        userId: item?.day.userId,
-      });
-
-      const placeUpdated: PlaceDetailProps = {
-        ...data,
-        rating: newRate,
-      };
-
-      await updateDoc(
-        doc(firestoreInstance, "places", item?.placeId),
-        placeUpdated
-      );
-      Alert.alert("Avaliação enviada com sucesso!");
-    } catch (error: any) {
-      console.log("Error set rate: ", error);
-    } finally {
-      setIsSendAvaliation(false);
-    }
+    await sendAvaliation(item, myRate);
+    Alert.alert("Avaliação enviada com sucesso!");
+    setIsSendAvaliation(false);
   };
 
   const ratingCompleted = (rating: number) => {

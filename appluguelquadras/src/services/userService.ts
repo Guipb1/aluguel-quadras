@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { Alert } from "react-native";
 import { authInstance, firestoreInstance } from "../config/firebase";
 import { UserProps } from "../contexts/AuthContext";
@@ -48,5 +48,15 @@ export const registerUser = async (userData: RegisterUserProps) => {
     );
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getPixService = async (locatorId: any) => {
+  try {
+    const query = await getDoc(doc(firestoreInstance, "users", locatorId));
+
+    return query.data();
+  } catch (error: any) {
+    console.log("Error get pix: ", error);
   }
 };

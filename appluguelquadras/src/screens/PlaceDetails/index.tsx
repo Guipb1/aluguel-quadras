@@ -28,6 +28,7 @@ import { Reserve } from "../../services/userService";
 import styles from "./styles";
 import { Colors } from "../../constants/colors";
 import stylesDark from "./stylesDark";
+import { deletePlace, handleReserve } from "../../services/placeService";
 
 export type PlaceDetailProps = PlaceItemProps & {
   availableTimes: TimeType[];
@@ -71,100 +72,15 @@ const PlaceDetails: React.FC = () => {
         Alert.alert("Escolha um horário e/ou o dia");
         return;
       }
-      if (!user.reserve) {
-        const reserve: Reserve = {
-          place: params.placeId,
-          day: day,
-          scheduleId: schedule,
-        };
+      const userUpdated = await handleReserve(
+        day,
+        schedule,
+        user,
+        params.placeId,
+        placeData
+      );
 
-        const userUpdated = {
-          ...user,
-          reserve: [reserve],
-        };
-
-        const [days] = placeData.availableTimes;
-        const novosDias = days.days.map((newDay) => {
-          if (newDay.day === day) {
-            return {
-              ...newDay,
-              isRented: true,
-              userId: user?.id,
-              status: "PENDENTE",
-            };
-          }
-          return newDay;
-        });
-
-        const newAvailableTimes = placeData.availableTimes.map((time) => {
-          if (time.id === schedule) {
-            return {
-              ...time,
-              days: novosDias,
-            };
-          }
-          return time;
-        });
-
-        const placeUpdated: PlaceDetailProps = {
-          ...placeData,
-          availableTimes: newAvailableTimes,
-        };
-        await updateDoc(
-          doc(firestoreInstance, "places", params.placeId),
-          placeUpdated
-        );
-        await updateDoc(doc(firestoreInstance, "users", user.id), userUpdated);
-        setUser(userUpdated);
-      } else {
-        const reserve = {
-          place: params.placeId,
-          day: day,
-          scheduleId: schedule,
-        };
-
-        const newReserves = user.reserve;
-        newReserves.push(reserve);
-
-        const userUpdated = {
-          ...user,
-          reserve: newReserves,
-        };
-
-        const [days] = placeData.availableTimes;
-        const novosDias = days.days.map((newDay) => {
-          if (newDay.day === day) {
-            return {
-              ...newDay,
-              isRented: true,
-              userId: user.id,
-              status: "PENDENTE",
-            };
-          }
-          return newDay;
-        });
-
-        const newAvailableTimes = placeData.availableTimes.map((time) => {
-          if (time.id === schedule) {
-            return {
-              ...time,
-              days: novosDias,
-            };
-          }
-          return time;
-        });
-
-        const placeUpdated: PlaceDetailProps = {
-          ...placeData,
-          availableTimes: newAvailableTimes,
-        };
-        await updateDoc(
-          doc(firestoreInstance, "places", params.placeId),
-          placeUpdated
-        );
-        await updateDoc(doc(firestoreInstance, "users", user.id), userUpdated);
-        setUser(userUpdated);
-      }
+      setUser(userUpdated);
       setModalVisible(true);
     } catch (error: any) {
       console.log("error: ", error);
@@ -174,7 +90,7 @@ const PlaceDetails: React.FC = () => {
   };
 
   const handleDeletePlace = async () => {
-    await deleteDoc(doc(firestoreInstance, "places", params.placeId));
+    await deletePlace(params.placeId);
     goBack();
   };
 

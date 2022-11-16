@@ -5,16 +5,12 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Platform,
-  KeyboardAvoidingView,
   Alert,
   useColorScheme,
   Image,
 } from "react-native";
 
 import { firebase } from "../../config/firebase";
-import { addDoc, collection } from "firebase/firestore";
-import { firestoreInstance } from "../../config/firebase";
 
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import * as ImagePicker from "expo-image-picker";
@@ -24,9 +20,9 @@ import stylesDark from "./stylesDark";
 import { Colors } from "../../constants/colors";
 import TextInput from "../../components/TextInput";
 import useAuthContext from "../../hooks/useAuthContext";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Rating, TimeType } from "../../@types";
+import { TimeType } from "../../@types";
 import TimeChip from "../../components/TimeChip";
+import { addPlace } from "../../services/placeService";
 
 const NewPlace: React.FC = () => {
   const theme = useColorScheme();
@@ -35,8 +31,6 @@ const NewPlace: React.FC = () => {
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [hourValue, setHourValue] = useState("");
-  const [startOperationTime, setStartOperationTime] = useState("");
-  const [finishOperationTime, setFinishOperationTime] = useState("");
   const [image, setImage] = useState(null);
 
   const [availableTimes, setAvailableTimes] = useState<TimeType[]>([]);
@@ -83,7 +77,6 @@ const NewPlace: React.FC = () => {
     }
     try {
       let getImageURL;
-      console.log("image.uri: ", image);
       if (image !== null) {
         const response = await fetch(image.uri);
         const blob = await response.blob();
@@ -102,17 +95,15 @@ const NewPlace: React.FC = () => {
           .ref(image.uri.substring(image.uri.lastIndexOf("/") + 1))
           .getDownloadURL();
       }
-      const rating: Rating[] = [];
-      const newPlace = {
-        user: user.id,
+      await addPlace(
+        image,
         name,
         address,
         hourValue,
         availableTimes,
-        rating,
-        imageUrl: image !== null ? getImageURL : "",
-      };
-      await addDoc(collection(firestoreInstance, "places"), newPlace);
+        user,
+        getImageURL
+      );
 
       goBack();
     } catch (error) {
@@ -210,10 +201,7 @@ const NewPlace: React.FC = () => {
         </TouchableOpacity>
       </View>
       <ScrollView>
-        <View
-          // behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.content}
-        >
+        <View style={styles.content}>
           <View style={styles.separator}>
             <TextInput
               title="Nome"
@@ -230,22 +218,6 @@ const NewPlace: React.FC = () => {
               value={address}
             />
           </View>
-          {/* <View style={styles.separator}>
-            <TextInput
-              title="Hora de abertura"
-              keyboardType="decimal-pad"
-              onChangeText={(text) => setStartOperationTime(text)}
-              value={startOperationTime}
-            />
-          </View> */}
-          {/* <View style={styles.separator}>
-            <TextInput
-              title="Hora de fechamento"
-              keyboardType="decimal-pad"
-              onChangeText={(text) => setFinishOperationTime(text)}
-              value={finishOperationTime}
-            />
-          </View> */}
           <View style={styles.separator}>
             <TextInput
               title="Valor da hora"

@@ -6,12 +6,14 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  useColorScheme,
 } from "react-native";
 
 import { Colors } from "../../constants/colors";
 import * as ImagePicker from "expo-image-picker";
 
 import styles from "./styles";
+import stylesDark from "./stylesDark";
 import { firebase } from "../../config/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { firestoreInstance } from "../../config/firebase";
@@ -21,6 +23,7 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 import { HomeStackParamList } from "../../routes/types";
 
 const SendComprovant = () => {
+  const theme = useColorScheme();
   const { params } = useRoute<RouteProp<HomeStackParamList>>();
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -94,9 +97,19 @@ const SendComprovant = () => {
   };
 
   return (
-    <View style={styles.itemContainer}>
+    <View
+      style={
+        theme === "light" ? styles.itemContainer : stylesDark.itemContainer
+      }
+    >
       <Image />
-      <Text style={styles.sendComprovatText}>
+      <Text
+        style={
+          theme === "light"
+            ? styles.sendComprovatText
+            : stylesDark.sendComprovatText
+        }
+      >
         Envie seu comprovante para o locador disponibilizar a quadra para você!
       </Text>
       <TouchableOpacity
@@ -108,12 +121,7 @@ const SendComprovant = () => {
       >
         <Text style={styles.bookingButtonText}>Escolher imagem</Text>
       </TouchableOpacity>
-      {image && (
-        <Image
-          source={{ uri: image.uri }}
-          style={styles.image}
-        />
-      )}
+      {image && <Image source={{ uri: image.uri }} style={styles.image} />}
       <TouchableOpacity
         style={{ ...styles.pickImage, marginTop: 20 }}
         onPress={uploadImage}
