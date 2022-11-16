@@ -5,4 +5,9 @@ export const Colors = {
   PAPER: "#FFF",
   TEXT_PRIMARY: "#333",
   TEXT_SECONDARY: "#FFF",
+  RED: "#F83D51",
+  PENDING: "#FCA120",
+  SEND_COMPROVANT: "#D0B084",
+  STAR: "#F1C40E",
+  DARK: "#202124",
 };

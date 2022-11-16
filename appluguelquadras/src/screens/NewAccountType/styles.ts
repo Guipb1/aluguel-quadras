@@ -1,44 +1,41 @@
-import {StyleSheet} from "react-native"
+import { StyleSheet } from "react-native";
+import { Colors } from "../../constants/colors";
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
+  btnLocador: {
+    width: 200,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.PRIMARY,
+    borderRadius: 50,
+    marginBottom: 50,
+  },
 
-    container: {
-        flex: 1,
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+  titleLocador: {
+    fontWeight: "bold",
+  },
 
-    btnLocador:{
-        width:200,
-        height:50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#00FF7F',
-        borderRadius:50,
-        marginBottom:50,
-    },
+  btnLocatario: {
+    width: 200,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.PRIMARY,
+    borderRadius: 50,
+    marginBottom: 10,
+  },
 
-    titleLocador:{
-        fontWeight:"bold",
-    },
+  titleLocatario: {
+    fontWeight: "bold",
+  },
+});
 
-    btnLocatario: {
-        width:200,
-        height:50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#00FF7F',
-        borderRadius:50,
-        marginBottom:10,
-    },
-
-    titleLocatario: {
-        fontWeight:"bold",
-    }
-
-})
-
-
-export default styles
+export default styles;

@@ -5,18 +5,25 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  User,
 } from "firebase/auth";
 
 import { authInstance, firestoreInstance } from "../../config/firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { log } from "react-native-reanimated";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
+
+type Reserve = {
+  place: string;
+  day: string;
+  scheduleId: string;
+};
 
 export type UserProps = {
   id: string;
   name: string;
   email: string;
-  type: "BASIC" | "LOCATOR";
-  // cnpj?: string;
+  type: "LOCATOR" | "BASIC";
+  reserve?: Reserve[];
+  pix?: string;
 };
 
 export type AuthContextProps = {
@@ -24,14 +31,18 @@ export type AuthContextProps = {
   loading: boolean;
   hasUser: boolean;
   user: UserProps | undefined;
+  firebaseUser: User | undefined;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
+  setUser: Function;
 };
 
 const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthContextProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<UserProps | undefined>();
+  const [firebaseUser, setFirebaseUser] = useState<User | undefined>();
   const [initializing, setInitializing] = useState(true);
   const [loading, setLoading] = useState(false);
 
@@ -42,9 +53,10 @@ export const AuthContextProvider: React.FC = ({ children }) => {
         const docSnap = await getDoc(userById);
 
         const userInfos = docSnap.data() as UserProps;
-
+        setFirebaseUser(loggedUser);
         setUser(userInfos);
       } else {
+        setFirebaseUser(loggedUser);
         setUser(undefined);
       }
 
@@ -63,6 +75,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     } catch (error) {
       Alert.alert("Falha ao realizar login");
       console.log(JSON.stringify(error));
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -71,6 +84,22 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     try {
       setLoading(true);
       await signOut(authInstance);
+      setFirebaseUser(undefined);
+      setUser(undefined);
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteAccount = async () => {
+    try {
+      setLoading(true);
+      await firebaseUser.delete();
+      await deleteDoc(doc(firestoreInstance, "users", user.id));
+
+      setFirebaseUser(undefined);
       setUser(undefined);
     } catch (error) {
       throw error;
@@ -86,8 +115,11 @@ export const AuthContextProvider: React.FC = ({ children }) => {
         loading,
         hasUser: Boolean(user),
         user,
+        firebaseUser,
         login,
         logout,
+        deleteAccount,
+        setUser,
       }}
     >
       {children}

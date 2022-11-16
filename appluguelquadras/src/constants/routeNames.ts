@@ -10,6 +10,9 @@ export const RouteNames = {
     ROOT: "PRIVATE",
     HOME: {
       ROOT: "HOME",
+      PROFILE_INFOS: "PROFILE_INFOS",
+      SEND_COMPROVANT: "SEND_COMPROVANT",
+      PAY: "PAY",
     },
     BOOKINGS: {
       ROOT: "BOOKINGS",
@@ -17,6 +20,7 @@ export const RouteNames = {
     PLACES: {
       ROOT: "PLACES",
       NEW_PLACE: "NEW_PLACE",
+      PLACE_DETAILS: "PLACE_DETAILS",
     },
   },
 } as const;

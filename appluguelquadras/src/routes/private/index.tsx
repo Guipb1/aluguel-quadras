@@ -1,17 +1,13 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import {
-  MaterialCommunityIcons,
-  MaterialIcons,
-  FontAwesome,
-} from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import Home from "../../screens/Home";
 import { RouteNames } from "../../constants/routeNames";
 import { Colors } from "../../constants/colors";
 
 import { PrivateTabsParamList, PrivateTabsRouteProp } from "../types";
 
+import HomeRoutes from "./HomeRoutes";
 import PlacesRoutes from "./PlacesRoutes";
 
 type HandleTabBarIconProps = {
@@ -61,14 +57,13 @@ const PrivateRoutes = () => {
         tabBarActiveTintColor: Colors.TEXT_SECONDARY,
         tabBarInactiveTintColor: Colors.BACKGROUND,
         tabBarItemStyle: {
-          height: 60,
+          height: 56,
         },
         tabBarStyle: {
           display: "flex",
           padding: 0,
           position: "absolute",
           justifyContent: "center",
-          height: 56,
           borderWidth: 1,
           borderTopWidth: 1,
           borderColor: Colors.PRIMARY,
@@ -88,7 +83,7 @@ const PrivateRoutes = () => {
         backgroundColor: Colors.BACKGROUND,
       }}
     >
-      <Tabs.Screen name={RouteNames.PRIVATE.HOME.ROOT} component={Home} />
+      <Tabs.Screen name={RouteNames.PRIVATE.HOME.ROOT} component={HomeRoutes} />
       <Tabs.Screen
         name={RouteNames.PRIVATE.PLACES.ROOT}
         component={PlacesRoutes}

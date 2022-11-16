@@ -1,27 +1,44 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Rating } from "../../@types";
+import { RouteNames } from "../../constants/routeNames";
 import styles from "./styles";
+
+export type Days = {
+  day: string;
+  isRented: boolean;
+}
 
 export type PlaceItemProps = {
   id: string;
   name: string;
   address: string;
   hourValue: string;
-  startOperationTime: string;
-  finishOperationTime: string;
   imageUrl: string;
+  user?: string;
+  rating?: Rating[];
+  days?: Days[];
 };
 
 const PlaceItem: React.FC<PlaceItemProps> = ({
+  id,
   name,
   address,
   imageUrl,
   hourValue,
-  startOperationTime,
-  finishOperationTime,
 }) => {
+  const { navigate } = useNavigation();
   return (
-    <TouchableOpacity activeOpacity={0.8} style={styles.container}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={styles.container}
+      onPress={() =>
+        navigate(RouteNames.PRIVATE.PLACES.PLACE_DETAILS, {
+          placeId: id,
+        })
+      }
+    >
       <View>
         <Image
           source={
@@ -38,11 +55,7 @@ const PlaceItem: React.FC<PlaceItemProps> = ({
           <Text style={styles.address}>{address}</Text>
         </View>
         <View>
-          <Text style={styles.address}>{startOperationTime}</Text>
-          <Text style={styles.address}>{finishOperationTime}</Text>
-        </View>
-        <View>
-          <Text style={styles.address}>{hourValue}</Text>
+          <Text style={styles.address}>R$ {hourValue}</Text>
         </View>
       </View>
     </TouchableOpacity>

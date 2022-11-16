@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
+    marginTop: 20,
     alignSelf: "stretch",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -22,8 +23,36 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 20,
   },
-  inputSeparator: {
+  separator: {
     marginBottom: 16,
+  },
+  addTimesContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 8,
+    marginBottom: 16,
+  },
+
+  addTimesTitle: {
+    fontWeight: "bold",
+  },
+
+  addTimesButton: {
+    backgroundColor: Colors.BACKGROUND,
+    padding: 8,
+    borderRadius: 6,
+  },
+
+  pickImage: {
+    alignSelf: "stretch",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 8,
+    borderRadius: 5,
+    backgroundColor: Colors.PRIMARY,
+    width: "100%",
+    marginBottom: 15,
   },
 
   confirmButton: {
@@ -34,11 +63,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     borderRadius: 8,
     backgroundColor: Colors.PRIMARY,
+    marginBottom: 100,
   },
   confirmButtonText: {
     fontSize: 16,
     fontWeight: "bold",
     color: Colors.TEXT_PRIMARY,
+  },
+  viewImage: {
+    alignItems: "center",
+  },
+  image: {
+    width: 300,
+    height: 300,
+    borderRadius: 2,
   },
 });
 

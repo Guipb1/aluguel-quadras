@@ -1,4 +1,5 @@
 import { Platform, StyleSheet } from "react-native";
+import { Colors } from "../../constants/colors";
 
 const styles = StyleSheet.create({
   container: {
@@ -6,35 +7,23 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: Platform.OS === "ios" ? 0 : 50,
+    padding: 32,
   },
 
   title: {
-    fontSize: 48,
-    color: "#00FF7F",
-    marginBottom: 10,
+    fontSize: 32,
+    color: Colors.PRIMARY,
+    marginBottom: 32,
     fontWeight: "bold",
   },
 
-  input: {
-    width: 300,
-    marginTop: 10,
-    padding: 10,
-    height: 50,
-    borderBottomWidth: 1,
-    borderBottomColor: "#00FF7F",
-    marginLeft: "auto",
-    marginRight: "auto",
-    color: "#4d5156",
-  },
-
   buttonLogin: {
-    width: 200,
+    alignSelf: "stretch",
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#00FF7F",
-    borderRadius: 50,
+    backgroundColor: Colors.PRIMARY,
+    borderRadius: 8,
     marginTop: 30,
   },
   buttonError: {
@@ -66,6 +55,16 @@ const styles = StyleSheet.create({
   linkSubscribe: {
     color: "#1877f2",
     fontSize: 16,
+  },
+
+  separator: {
+    marginBottom: 16,
+    width: "100%",
+  },
+
+  showPassword: {
+    width: "100%",
+    flexDirection: "row-reverse",
   },
 });
 

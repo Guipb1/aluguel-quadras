@@ -19,9 +19,16 @@ export type PublicStackParamList = {
   [RouteNames.PUBLIC.NEW_ACCOUNT_LOCATOR]: undefined;
 };
 
+export type HomeStackParamList = {
+  [RouteNames.PRIVATE.HOME.ROOT]: undefined;
+  [RouteNames.PRIVATE.HOME.PROFILE_INFOS]: undefined;
+  [RouteNames.PRIVATE.HOME.PAY]: { item: any };
+  [RouteNames.PRIVATE.HOME.SEND_COMPROVANT]: { item: any };
+};
 export type PlaceStackParamList = {
   [RouteNames.PRIVATE.PLACES.ROOT]: undefined;
   [RouteNames.PRIVATE.PLACES.NEW_PLACE]: undefined;
+  [RouteNames.PRIVATE.PLACES.PLACE_DETAILS]: { placeId: string };
 };
 
 export type PlaceStackScreenProps<T extends keyof PlaceStackParamList> =
@@ -49,6 +56,7 @@ declare global {
       extends RootStackParamList,
         PublicStackParamList,
         PrivateTabsParamList,
+        HomeStackParamList,
         PlaceStackParamList {}
   }
 }

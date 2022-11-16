@@ -11,6 +11,7 @@ import { PlaceStackParamList } from "../../types";
 import Places from "../../../screens/Places";
 import NewPlace from "../../../screens/NewPlace";
 import { Colors } from "../../../constants/colors";
+import PlaceDetails from "../../../screens/PlaceDetails";
 
 const Stack = createStackNavigator<PlaceStackParamList>();
 
@@ -23,6 +24,10 @@ const PlacesRoutes = () => {
       }}
     >
       <Stack.Screen name={RouteNames.PRIVATE.PLACES.ROOT} component={Places} />
+      <Stack.Screen
+        name={RouteNames.PRIVATE.PLACES.PLACE_DETAILS}
+        component={PlaceDetails}
+      />
       <Stack.Screen
         name={RouteNames.PRIVATE.PLACES.NEW_PLACE}
         component={NewPlace}

@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     paddingBottom: 20,
+    marginTop: 45,
   },
   titleText: {
     fontSize: 24,
@@ -18,4 +19,5 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
 });
+
 export default styles;

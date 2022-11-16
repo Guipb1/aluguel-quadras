@@ -3,59 +3,70 @@ import {
   View,
   Text,
   KeyboardAvoidingView,
-  TextInput,
   TouchableOpacity,
   Platform,
+  Alert,
+  useColorScheme,
 } from "react-native";
-import firebase from "../../config/firebase";
-import styles from "./styles";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function NewAccountBasic({ navigation }) {
+import styles from "./styles";
+import stylesDark from "./stylesDark";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { RouteNames } from "../../constants/routeNames";
+import { registerUser } from "../../services/userService";
+import TextInput from "../../components/TextInput";
+
+export default function NewAccountBasic() {
+  const theme = useColorScheme();
+  const { navigate } = useNavigation();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //tentando logar em branco
+  const [name, setName] = useState("");
   const [errorCadastro, setErrorCadastro] = useState(false);
 
-  const cadastrar = () => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        let user = userCredential.user;
-        navigation.navigate("Login", { idUser: user.uid });
-      })
-      .catch((error) => {
-        setErrorCadastro(true);
-        let errorCode = error.code;
-        let errorMessage = error.message;
-      });
+  const handleRegisterUser = async () => {
+    try {
+      registerUser({ name, email, password, type: "BASIC" });
+    } catch (error) {
+      Alert.alert("nao foi possivel criar usuario");
+    }
   };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
+      style={theme === "light" ? styles.container : stylesDark.container}
     >
       <Text style={styles.title}>Criar nova conta</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Qual seu melhor email ?"
-        keyboardType="email-address"
-        onChangeText={(text) => setEmail(text)}
-        value={email}
-      />
+      <View style={styles.separator}>
+        <TextInput
+          title="entre com seu nome"
+          keyboardType="default"
+          onChangeText={(text) => setName(text)}
+          value={name}
+        />
+      </View>
+      <View style={styles.separator}>
+        <TextInput
+          title="entre com seu email"
+          keyboardType="email-address"
+          onChangeText={(text) => setEmail(text)}
+          value={email}
+        />
+      </View>
+      <View style={styles.separator}>
+        <TextInput
+          title="entre com sua senha"
+          secureTextEntry={true}
+          keyboardType="default"
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+        />
+      </View>
 
-      <TextInput
-        style={styles.input}
-        secureTextEntry={true}
-        placeholder="Crie uma senha"
-        keyboardType="default"
-        onChangeText={(text) => setPassword(text)}
-        value={password}
-      />
-
-      {errorCadastro === true ? (
+      {errorCadastro && (
         <View style={styles.contentAlert}>
           <MaterialCommunityIcons
             name="alert-circle"
@@ -64,25 +75,22 @@ export default function NewAccountBasic({ navigation }) {
           />
           <Text style={styles.warningAlert}>Invalid email or password</Text>
         </View>
-      ) : (
-        <View />
-      )}
-      {email === "" || password === "" ? (
-        <TouchableOpacity disabled={true} style={styles.buttonRegister}>
-          <Text style={styles.textButtonRegister}>Registrar</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity style={styles.buttonRegister} onPress={cadastrar}>
-          <Text style={styles.textButtonRegister}>Registrar</Text>
-        </TouchableOpacity>
       )}
 
-      <Text style={styles.login}>
+      <TouchableOpacity
+        style={styles.buttonRegister}
+        onPress={handleRegisterUser}
+      >
+        <Text style={styles.textButtonRegister}>Registrar</Text>
+      </TouchableOpacity>
+
+      <Text style={theme === "light" ? styles.login : stylesDark.login}>
         Voce já está registrado?
         <Text
           style={styles.linkLogin}
-          onPress={() => navigation.navigate("Login")}
+          onPress={() => navigate(RouteNames.PUBLIC.LOGIN)}
         >
+          {" "}
           Login...
         </Text>
       </Text>

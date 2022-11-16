@@ -1,72 +1,63 @@
-import {Platform, StyleSheet} from "react-native"
+import { Platform, StyleSheet } from "react-native";
+import { Colors } from "../../constants/colors";
 
 const styles = StyleSheet.create({
-    container:{
-        flex: 1,
-        backgroundColor: '#ffffff',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: Platform.OS === "ios" ? 0 : 50,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 32,
+  },
 
-    title: {
-            fontSize:22,
-            color:"#00FF7F",
-            marginBottom:10,
-            fontWeight:"bold",
-    },
+  title: {
+    fontSize: 22,
+    color: Colors.PRIMARY,
+    fontWeight: "bold",
+    marginBottom: 32,
+  },
 
-    input: {
-        width:300,
-        marginTop:10,
-        padding:10,
-        height:50,
-        borderBottomWidth:1,
-        borderBottomColor:"#00FF7F",
-        marginLeft:"auto",
-        marginRight:"auto",
-        color:"#4d5156",
-    },
+  buttonRegister: {
+    alignSelf: "stretch",
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Colors.PRIMARY,
+    borderRadius: 8,
+    marginTop: 30,
+  },
 
-    buttonRegister:{
-        width:200,
-        height:50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#00FF7F',
-        borderRadius:50,
-        marginTop:30,
-    },
+  textButtonRegister: {
+    color: Colors.TEXT_PRIMARY,
+  },
 
-    textButtonRegister: {
-        color:"black"
-    },
+  contentAlert: {
+    marginTop: 20,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
-    contentAlert:{
-        marginTop:20,
-        flexDirection:"row",
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+  warningAlert: {
+    paddingLeft: 10,
+    color: "#bdbdbd",
+    fontSize: 16,
+  },
 
-    warningAlert: {
-        paddingLeft:10,
-        color:"#bdbdbd",
-        fontSize:16,
-    },
+  login: {
+    marginTop: 20,
+    color: "#4d5156",
+  },
 
-    login: {
-        marginTop:20,
-        color:"#4d5156",
-    },
+  linkLogin: {
+    color: "#1877f2",
+    fontSize: 16,
+  },
 
-    linkLogin: {
-        color:"#1877f2",
-        fontSize:16,
-    }
-
-
-
+  separator: {
+    marginBottom: 16,
+    width: "100%",
+  },
 });
 
-export default styles
+export default styles;

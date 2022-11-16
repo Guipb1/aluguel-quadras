@@ -15,11 +15,11 @@ const TextInput: React.FC<TextInputProps> = ({ title, ...props }) => {
   return (
     <View style={styles.container}>
       <RNTextInput
-        placeholderTextColor={Colors.TEXT_PRIMARY}
         style={styles.input}
         placeholder={title || props.placeholder}
         autoCompleteType="off"
         autoCapitalize="none"
+        placeholderTextColor={Colors.TEXT_PRIMARY}
         {...props}
       />
     </View>

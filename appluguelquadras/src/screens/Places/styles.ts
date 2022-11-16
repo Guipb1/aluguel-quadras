@@ -1,13 +1,11 @@
 import { StyleSheet } from "react-native";
 
-import Constants from "expo-constants";
 import { Colors } from "../../constants/colors";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#EFF2F5",
-    paddingTop: Constants.statusBarHeight + 8,
+    backgroundColor: Colors.BACKGROUND,
   },
 
   content: {
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
 
   newPlaceButton: {
     position: "absolute",
-    bottom: 84,
+    bottom: 100,
     right: 24,
     justifyContent: "center",
     alignItems: "center",
