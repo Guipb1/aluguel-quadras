@@ -7,9 +7,10 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     paddingRight: 16,
     width: 140,
-    height: 200,
+    height: 300,
     flexDirection: "column",
-    marginRight: 30,
+    marginHorizontal: 20,
+    alignItems: 'center'
   },
   bannerItem: {
     width: 160,
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
   viewText: {
     alignItems: "center",
     justifyContent: "center",
+    width: '100%'
   },
   text: {
     color: Colors.STAR,

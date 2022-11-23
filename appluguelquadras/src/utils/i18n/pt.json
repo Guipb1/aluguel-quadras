@@ -57,7 +57,8 @@
       "BETTER_WORST": "Gráfico da quadra com melhor/pior avaliação",
       "MONTH": "escolha um mês",
       "NOT_LOCATOR": "Ops, esta tela é apenas para locatários",
-      "BY_MONTH": "(por mês)"
+      "BY_MONTH": "(por mês)",
+      "NOT_RATING": "Ops, parece que suas quadras ainda não possuem nenhuma avaliação"
     },
     "PLACES": {
       "BASIC": "Quadras disponíveis",

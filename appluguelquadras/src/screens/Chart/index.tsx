@@ -48,31 +48,35 @@ const Chart: React.FC = () => {
 
       snapshot.forEach((doc) => {
         if (user?.id === doc.data().user) {
-          let filterPlacesByMonth = doc
-            .data()
-            .rating.filter(({ month }) => month === monthState);
+          if (doc.data()?.rating.length > 0) {
+            let filterPlacesByMonth = doc
+              .data()
+              .rating.filter(({ month }) => month === monthState);
 
-          let sum = filterPlacesByMonth.reduce((soma, record) => {
-            return soma + record.rate;
-          }, 0);
+            let sum = filterPlacesByMonth.reduce((soma, record) => {
+              return soma + record.rate;
+            }, 0);
 
-          placesFiltered.push({
-            name: doc.data().name,
-            sum: sum === 0 ? 0 : sum / filterPlacesByMonth.length,
-          });
+            placesFiltered.push({
+              name: doc.data().name,
+              sum: sum === 0 ? 0 : sum / filterPlacesByMonth.length,
+            });
+          }
         }
       });
 
-      placesFiltered.sort((a, b) => parseFloat(b.sum) - parseFloat(a.sum));
-      let array = [];
-      array.push(
-        { name: placesFiltered[0].name, sum: placesFiltered[0].sum },
-        {
-          name: placesFiltered[placesFiltered.length - 1].name,
-          sum: placesFiltered[placesFiltered.length - 1].sum,
-        }
-      );
-      setBetterAndWorst(array);
+      if (placesFiltered.length > 0) {
+        placesFiltered.sort((a, b) => parseFloat(b.sum) - parseFloat(a.sum));
+        let array = [];
+        array.push(
+          { name: placesFiltered[0].name, sum: placesFiltered[0].sum },
+          {
+            name: placesFiltered[placesFiltered.length - 1].name,
+            sum: placesFiltered[placesFiltered.length - 1].sum,
+          }
+        );
+        setBetterAndWorst(array);
+      }
     });
 
     return listner;
@@ -90,13 +94,17 @@ const Chart: React.FC = () => {
 
         snapshot.forEach((doc) => {
           if (user?.id === doc.data().user) {
-            let sum = doc.data().rating.reduce((accumulator: number, item) => {
-              return accumulator + item.rate;
-            }, 0);
-            placesFirebase.push({
-              name: doc.data().name,
-              sum: sum === 0 ? 0 : sum / doc.data().rating.length,
-            });
+            if (doc.data()?.rating.length > 0) {
+              let sum = doc
+                .data()
+                .rating.reduce((accumulator: number, item) => {
+                  return accumulator + item.rate;
+                }, 0);
+              placesFirebase.push({
+                name: doc.data().name,
+                sum: sum === 0 ? 0 : sum / doc.data().rating.length,
+              });
+            }
           }
         });
 
@@ -116,28 +124,43 @@ const Chart: React.FC = () => {
   return (
     <>
       {user?.type === "LOCATOR" ? (
-        <ScrollView>
-          <View
-            style={theme === "light" ? styles.container : stylesDark.container}
-          >
-            <View style={styles.marginVertical}>
-              <Text
-                style={
-                  theme === "light" ? styles.textChart : stylesDark.textChart
-                }
-              >
-                {t("CHART.TITLE")}
-              </Text>
+        <ScrollView
+          style={theme === "light" ? styles.container : stylesDark.container}
+        >
+          <View style={styles.marginVertical}>
+            <Text
+              style={
+                theme === "light" ? styles.textChart : stylesDark.textChart
+              }
+            >
+              {t("CHART.TITLE")}
+            </Text>
+            {places.length > 0 ? (
               <VictoryPie
                 style={{
-                  labels: { fill: Colors.PRIMARY, fontSize: 16 },
+                  labels: {
+                    fill: theme === "light" ? Colors.DARK : Colors.PAPER,
+                    fontSize: 14,
+                    fontWeight: "bold",
+                  },
                 }}
-                colorScale={["navy", "tomato", "orange", "gold", "cyan"]}
+                labelRadius={(label) => (label.innerRadius as number) + 90}
+                colorScale={["cyan", "tomato", "orange", "gold", "green"]}
                 x="name"
                 y="sum"
                 data={places}
               />
-            </View>
+            ) : (
+              <Text
+                style={
+                  theme === "light" ? styles.notRating : stylesDark.notRating
+                }
+              >
+                {t("CHART.NOT_RATING")}
+              </Text>
+            )}
+          </View>
+          {betterAndWorst.length > 0 && (
             <View style={styles.marginVertical}>
               <Text
                 style={
@@ -169,6 +192,7 @@ const Chart: React.FC = () => {
               </Picker>
               <View>
                 <VictoryChart
+                  maxDomain={{ y: 5 }}
                   theme={VictoryTheme.material}
                   domainPadding={{ x: 30 }}
                 >
@@ -185,7 +209,7 @@ const Chart: React.FC = () => {
                 </VictoryChart>
               </View>
             </View>
-          </View>
+          )}
         </ScrollView>
       ) : (
         <View

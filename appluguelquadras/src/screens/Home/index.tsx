@@ -82,14 +82,14 @@ const Home: React.FC = () => {
     try {
       let media = 0;
       const data = await getRateService(item);
-      if (data.rating) {
-        if (data.rating?.length > 0) {
-          data.rating?.forEach((rate) => {
+      if (data?.rating) {
+        if (data?.rating?.length > 0) {
+          data?.rating?.forEach((rate) => {
             media = media + rate.rate;
           });
         }
       }
-      setRatePlace(media / data.rating?.length);
+      setRatePlace(media / data?.rating?.length);
     } catch (error: any) {
       console.log("Error get rate: ", error);
     }
@@ -122,6 +122,7 @@ const Home: React.FC = () => {
       let betterPlacesSnapshot = [];
 
       snapshot.forEach((doc) => {
+        let avaliations = doc.data().rating?.length;
         let sum = doc.data().rating.reduce((accumulator: number, item) => {
           return accumulator + item.rate;
         }, 0);
@@ -130,6 +131,7 @@ const Home: React.FC = () => {
           rate: (sum === 0 ? 0 : sum / doc.data().rating.length).toFixed(1),
           place: doc.data().name,
           imageUrl: doc.data()?.imageUrl,
+          avaliations,
         };
         betterPlacesSnapshot.push(rate);
       });

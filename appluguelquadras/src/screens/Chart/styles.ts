@@ -18,6 +18,12 @@ const styles = StyleSheet.create({
   textBetterAndWorst: {
     fontSize: 18,
   },
+  notRating: {
+    padding: 30,
+    color: Colors.DARK,
+    fontSize: 16,
+    textAlign: "center",
+  },
   picker: {
     color: Colors.DARK,
     width: 200,

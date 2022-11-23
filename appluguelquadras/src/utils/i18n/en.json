@@ -57,7 +57,8 @@
       "BETTER_WORST": "Graph of the best/worst rated court",
       "MONTH": "choose a month",
       "NOT_LOCATOR": "Oops, this screen is for renters only",
-      "BY_MONTH": "(by month)"
+      "BY_MONTH": "(by month)",
+      "NOT_RATING": "Oops, looks like your courts don't have any ratings yet"
     },
     "PLACES": {
       "BASIC": "Courts available",

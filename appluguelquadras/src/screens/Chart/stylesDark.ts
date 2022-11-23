@@ -30,6 +30,12 @@ const stylesDark = StyleSheet.create({
     fontSize: 18,
     color: Colors.PAPER,
   },
+  notRating: {
+    padding: 30,
+    color: Colors.PAPER,
+    fontSize: 16,
+    textAlign: "center",
+  },
 });
 
 export default stylesDark;
