@@ -15,14 +15,16 @@ import * as ImagePicker from "expo-image-picker";
 import styles from "./styles";
 import stylesDark from "./stylesDark";
 import { firebase } from "../../config/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { firestoreInstance } from "../../config/firebase";
-import { generateUuid } from "../../utils/generateUuid";
 import { Rent } from "../../@types";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { HomeStackParamList } from "../../routes/types";
+import "../../utils/i18n/i18n";
+import { useTranslation } from "react-i18next";
 
 const SendComprovant = () => {
+  const { t } = useTranslation();
   const theme = useColorScheme();
   const { params } = useRoute<RouteProp<HomeStackParamList>>();
   const [image, setImage] = useState(null);
@@ -32,7 +34,7 @@ const SendComprovant = () => {
     setLoading(true);
     try {
       if (image === null) {
-        Alert.alert("Escolha uma imagem");
+        Alert.alert(t("SEND_COMPROVANT.IMAGE"));
         return;
       }
       const response = await fetch(image.uri);
@@ -45,9 +47,7 @@ const SendComprovant = () => {
       } catch (error: any) {
         console.log("Error up firebase image: ", error);
       }
-      Alert.alert(
-        "Comprovante enviado com sucesso.\n Aguarde o locador confirmar"
-      );
+      Alert.alert(t("SEND_COMPROVANT.SUCCESS"));
       setImage(null);
       try {
         let getImageURL = await firebase
@@ -55,14 +55,12 @@ const SendComprovant = () => {
           .ref(image.uri.substring(image.uri.lastIndexOf("/") + 1))
           .getDownloadURL();
 
-        const uuid = generateUuid();
-        const reservationInReview: Rent = {
+        const reservationInReview: any = {
           ...params.item,
-          image: getImageURL,
-          reserveId: uuid,
+          comprovant: getImageURL,
         };
-        await setDoc(
-          doc(firestoreInstance, "reserves", uuid),
+        await updateDoc(
+          doc(firestoreInstance, "reserves", params.item.reserveId),
           reservationInReview
         );
       } catch (error: any) {
@@ -110,7 +108,7 @@ const SendComprovant = () => {
             : stylesDark.sendComprovatText
         }
       >
-        Envie seu comprovante para o locador disponibilizar a quadra para você!
+        {t("SEND_COMPROVANT.TITLE")}
       </Text>
       <TouchableOpacity
         style={{
@@ -119,7 +117,9 @@ const SendComprovant = () => {
         }}
         onPress={pickImage}
       >
-        <Text style={styles.bookingButtonText}>Escolher imagem</Text>
+        <Text style={styles.bookingButtonText}>
+          {t("SEND_COMPROVANT.CHOOSE_IMAGE")}
+        </Text>
       </TouchableOpacity>
       {image && <Image source={{ uri: image.uri }} style={styles.image} />}
       <TouchableOpacity
@@ -129,7 +129,9 @@ const SendComprovant = () => {
         {loading ? (
           <ActivityIndicator color={Colors.TEXT_SECONDARY} size={32} />
         ) : (
-          <Text style={styles.bookingButtonText}>Enviar</Text>
+          <Text style={styles.bookingButtonText}>
+            {t("SEND_COMPROVANT.SEND")}
+          </Text>
         )}
       </TouchableOpacity>
     </View>

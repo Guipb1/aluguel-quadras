@@ -81,6 +81,26 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.TEXT_PRIMARY,
   },
+  viewButtonLgn: {
+    flexDirection: "row",
+    width: 100,
+    height: 35,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  langText: {
+    marginRight: 4,
+    marginLeft: 4,
+    color: Colors.DARK,
+  },
+  langButton: {
+    borderWidth: 1,
+    padding: 4,
+    borderRadius: 4,
+    marginRight: 4,
+    marginLeft: 4,
+    borderColor: Colors.PRIMARY,
+  },
 });
 
 export default styles;

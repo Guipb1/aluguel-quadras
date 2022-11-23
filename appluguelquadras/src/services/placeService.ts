@@ -4,12 +4,15 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { Rating, Rent, TimeType } from "../@types";
 import { firestoreInstance } from "../config/firebase";
 import useAuthContext from "../hooks/useAuthContext";
 import { PlaceDetailProps } from "../screens/PlaceDetails";
+import { generateUuid } from "../utils/generateUuid";
+import { getMonth } from "../utils/getMonth";
 import { Reserve } from "./userService";
 
 export const addPlace = async (
@@ -46,59 +49,19 @@ export const deletePlace = async (placeId: any) => {
   }
 };
 
-export const allowPlaceUpdate = async (item: Rent) => {
+export const allowPlaceUpdate = async (item: any) => {
   try {
-    const query = await getDoc(doc(firestoreInstance, "places", item?.placeId));
     const reserve = await getDoc(
       doc(firestoreInstance, "reserves", item?.reserveId)
     );
-    const data = query.data() as PlaceDetailProps;
-    const reserveData = reserve.data();
-    const { day } = reserveData;
-    const newDay = {
-      ...day,
+    const reserveData = {
+      ...reserve.data(),
       status: "APROVADO",
     };
 
-    const newReserve = {
-      ...reserveData,
-      day: newDay,
-    };
-
-    const [days] = data.availableTimes;
-    const novosDias = days.days.map((newDay) => {
-      if (newDay.day === item?.day.day) {
-        return {
-          ...newDay,
-          isRented: true,
-          userId: item.day.userId,
-          status: "APROVADO",
-        };
-      }
-      return newDay;
-    });
-
-    const novoAvailableTimes = data.availableTimes.map((teste) => {
-      if (teste.id === item?.availableTimeId) {
-        return {
-          ...teste,
-          days: novosDias,
-        };
-      }
-      return teste;
-    });
-
-    const placeUpdated: PlaceDetailProps = {
-      ...data,
-      availableTimes: novoAvailableTimes,
-    };
-    await updateDoc(
-      doc(firestoreInstance, "places", item?.placeId),
-      placeUpdated
-    );
     await updateDoc(
       doc(firestoreInstance, "reserves", item?.reserveId),
-      newReserve
+      reserveData
     );
   } catch (error: any) {
     console.log("Error allow place: ", error);
@@ -106,109 +69,38 @@ export const allowPlaceUpdate = async (item: Rent) => {
 };
 
 export const handleReserve = async (
-  day: string,
   schedule: string,
   user: any,
   placeId: any,
-  placeData: PlaceDetailProps
+  placeData: any,
+  dayOfWeek: string,
+  selectedTime: any
 ) => {
   try {
-    if (!user.reserve) {
-      const reserve: Reserve = {
-        place: placeId,
-        day: day,
-        scheduleId: schedule,
-      };
+    const uuid = generateUuid();
+    const reserve: any = {
+      schedule,
+      user,
+      placeId,
+      selectedTime,
+      dayOfWeek,
+      reserveId: uuid,
+    };
 
-      const userUpdated = {
-        ...user,
-        reserve: [reserve],
-      };
-
-      const [days] = placeData.availableTimes;
-      const novosDias = days.days.map((newDay) => {
-        if (newDay.day === day) {
-          return {
-            ...newDay,
-            isRented: true,
-            userId: user?.id,
-            status: "PENDENTE",
-          };
-        }
-        return newDay;
-      });
-
-      const newAvailableTimes = placeData.availableTimes.map((time) => {
-        if (time.id === schedule) {
-          return {
-            ...time,
-            days: novosDias,
-          };
-        }
-        return time;
-      });
-
-      const placeUpdated: PlaceDetailProps = {
-        ...placeData,
-        availableTimes: newAvailableTimes,
-      };
-      await updateDoc(doc(firestoreInstance, "places", placeId), placeUpdated);
-      await updateDoc(doc(firestoreInstance, "users", user.id), userUpdated);
-
-      return userUpdated;
-    } else {
-      const reserve = {
-        place: placeId,
-        day: day,
-        scheduleId: schedule,
-      };
-
-      const newReserves = user.reserve;
-      newReserves.push(reserve);
-
-      const userUpdated = {
-        ...user,
-        reserve: newReserves,
-      };
-
-      const [days] = placeData.availableTimes;
-      const novosDias = days.days.map((newDay) => {
-        if (newDay.day === day) {
-          return {
-            ...newDay,
-            isRented: true,
-            userId: user.id,
-            status: "PENDENTE",
-          };
-        }
-        return newDay;
-      });
-
-      const newAvailableTimes = placeData.availableTimes.map((time) => {
-        if (time.id === schedule) {
-          return {
-            ...time,
-            days: novosDias,
-          };
-        }
-        return time;
-      });
-
-      const placeUpdated: PlaceDetailProps = {
-        ...placeData,
-        availableTimes: newAvailableTimes,
-      };
-      await updateDoc(doc(firestoreInstance, "places", placeId), placeUpdated);
-      await updateDoc(doc(firestoreInstance, "users", user.id), userUpdated);
-
-      return userUpdated;
-    }
+    await setDoc(doc(firestoreInstance, "reserves", uuid), {
+      ...reserve,
+      status: "PENDENTE",
+      address: placeData.address,
+      name: placeData.name,
+      imageUrl: placeData.imageUrl,
+      locatorId: placeData.user,
+    });
   } catch (error: any) {
-    console.log("Error handle reserve: ", error);
+    console.log("Error handle reserve");
   }
 };
 
-export const sendAvaliation = async (item: Rent, myRate: number) => {
+export const sendAvaliation = async (item: any, myRate: number) => {
   try {
     const query = await getDoc(doc(firestoreInstance, "places", item?.placeId));
 
@@ -217,7 +109,8 @@ export const sendAvaliation = async (item: Rent, myRate: number) => {
     const newRate = data.rating;
     newRate.push({
       rate: myRate,
-      userId: item?.day.userId,
+      userId: item?.user.id,
+      month: getMonth(new Date().getMonth()),
     });
 
     const placeUpdated: PlaceDetailProps = {

@@ -1,0 +1,109 @@
+{
+  "translation": {
+    "LOGIN": {
+      "CHANGE_LGN": "Language successfully changed",
+      "EMAIL": "Inform your email",
+      "PASSWORD": "Inform your password",
+      "REGISTER": "Don't have a record?",
+      "REGISTER_NOW": "Register now...",
+      "ERROR_LOGIN": "Invalid email or password"
+    },
+    "REGISTER": {
+      "LOCATOR": "I WANT TO RENT",
+      "BASIC": "I WANT TO PLAY",
+      "NEW_ACCOUNT": "Create new account",
+      "NAME": "enter your name",
+      "EMAIL": "enter your email",
+      "PASSWORD": "enter your password",
+      "PIX": "enter your pix key ",
+      "REGISTER": "Register",
+      "ALREADY_REGISTER": "Are you already registered?"
+    },
+    "HOME": {
+      "HELLO": "Hello, ",
+      "PAYMENT_RECEIPTS": "Payment receipts",
+      "BETTER_PLACES": "Better places",
+      "PLACE_RESERVED": "This court was reserved for the time/day of",
+      "AT": "at",
+      "DAY": "day",
+      "PAYMENT_VOUCHER": "payment voucher",
+      "RELEASE_PLACE": "Release place",
+      "NOT_SEND": "This user has not yet sent proof",
+      "PENDING_COURTS": "Pending courts",
+      "APPROVED_COURTS": "Approved courts",
+      "NOT_RESERVE": "Whoops, looks like you haven't rented any courts yet",
+      "RESERVE_NOW": "Rent a court right now!",
+      "RENTED": "You rented for the time/day of",
+      "EVALUATE_COURT": "Evaluate court",
+      "SEND_REVIEW": "send review",
+      "SENDING": "Sending...",
+      "PAYMENT_STATUS": "payment status",
+      "SEND_RECEIPT": "Send receipt",
+      "MAKE_PAYMENT": "Make payment"
+    },
+    "SEND_COMPROVANT": {
+      "TITLE": "Send your proof to the landlord to make the court available to you!",
+      "CHOOSE_IMAGE": "Choose image",
+      "SEND": "Send",
+      "SUCCESS": "Voucher sent successfully.\n Wait for the landlord to confirm",
+      "IMAGE": "Choose an image"
+    },
+    "PAY": {
+      "TITLE": "To confirm the rent, copy the PIX code below and make the payment.",
+      "LOADING": "Loading pix..."
+    },
+    "CHART": {
+      "TITLE": "Graph of your court scores",
+      "BETTER_WORST": "Graph of the best/worst rated court",
+      "MONTH": "choose a month",
+      "NOT_LOCATOR": "Oops, this screen is for renters only",
+      "BY_MONTH": "(by month)"
+    },
+    "PLACES": {
+      "BASIC": "Courts available",
+      "LOCATOR": "Your courts",
+      "EMPTY_FIELDS": "Choose time, day of week or date",
+      "ALREADY_RENTED": "This date is already rented, try another one",
+      "HOURLY_RATE": "Hourly/rate",
+      "OPEN": "Open from Monday to Friday \nthe following hours",
+      "CHOOSE_DAY": "Choose the day",
+      "CONFIRM": "Confirm",
+      "CANCEL": "Cancel",
+      "LOADING": "Loading...",
+      "DELETE": "Delete court",
+      "MAKE_RESERVATION": "Make a reservation",
+      "SUCCESS": "Court reserved successfully!",
+      "AWAIT_CONFIRMATION": "When confirmed by the landlord, you will be able to use the court",
+      "GO_BACK": "Go back to Home",
+      "TIME": "time",
+      "NEW_PLACE": "New court",
+      "NAME": "Name",
+      "ADDRESS": "Address",
+      "TIME_VALUE": "Time value",
+      "IMPORT_IMAGE": "Import court image",
+      "MAX_HOUR": "Make available times: Max 20",
+      "NEW_HOUR": "New hour",
+      "ADD": "Add place",
+      "FILL_FIELDS": "Fill in all fields",
+      "TIME_LIMIT": "Time limit reached",
+      "EDIT_ALL": "Edit all your schedules so you can add a new one"
+    },
+    "PROFILE": {
+      "EDIT": "Edit your account",
+      "NAME": "enter your name",
+      "ACTUAL_PASSWORD": "Actual password",
+      "NEW_PASSWORD": "New password",
+      "SAVE": "Save changes",
+      "EXIT": "Exit",
+      "DELETE": "Delete account",
+      "ERRORS": {
+        "ACTUAL_PASSWORD": "Enter your current password",
+        "SHORT_PASSWORD": "New password too short",
+        "SUCCESS": "Successfully changed data!",
+        "CHANGE": "It was not possible to change your data. Try again!",
+        "EXIT": "it was not possible to leave",
+        "DELETE_ACCOUNT": "Unable to delete your account"
+      }
+    }
+  }
+}

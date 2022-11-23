@@ -1,0 +1,109 @@
+{
+  "translation": {
+    "LOGIN": {
+      "CHANGE_LGN": "Linguagem alterada com sucesso",
+      "EMAIL": "Informe seu e-mail",
+      "PASSWORD": "Informe sua senha",
+      "REGISTER": "Não tem cadastro?",
+      "REGISTER_NOW": "Cadastre agora...",
+      "ERROR_LOGIN": "Senha ou email inválido"
+    },
+    "REGISTER": {
+      "LOCATOR": "QUERO ALUGAR",
+      "BASIC": "QUERO JOGAR",
+      "NEW_ACCOUNT": "Criar nova conta",
+      "NAME": "digite seu nome",
+      "EMAIL": "digite seu email",
+      "PASSWORD": "digite sua senha",
+      "PIX": "digite sua chave pix",
+      "REGISTER": "Cadastrar",
+      "ALREADY_REGISTER": "Você já está registrado?"
+    },
+    "HOME": {
+      "HELLO": "Olá, ",
+      "PAYMENT_RECEIPTS": "Recibos de pagamento",
+      "BETTER_PLACES": "Melhores lugares",
+      "PLACE_RESERVED": "Esta quadra foi reservado para o horário/dia da",
+      "AT": "às",
+      "DAY": "dia",
+      "PAYMENT_VOUCHER": "comprovante de pagamento",
+      "RELEASE_PLACE": "Liberar quadra",
+      "NOT_SEND": "Este usuário ainda não enviou comprovante",
+      "PENDING_COURTS": "Quadras pendentes",
+      "APPROVED_COURTS": "Quadras aprovadas",
+      "NOT_RESERVE": "Ops, parece que você ainda não alugou nenhuma quadra",
+      "RESERVE_NOW": "Alugue uma quadra agora mesmo!",
+      "RENTED": "Você alugou para o horário/dia de",
+      "EVALUATE_COURT": "Avaliar quadra",
+      "SEND_REVIEW": "enviar avaliação",
+      "SENDING": "Enviando...",
+      "PAYMENT_STATUS": "status do pagamento",
+      "SEND_RECEIPT": "Enviar comprovante",
+      "MAKE_PAYMENT": "Fazer pagamento"
+    },
+    "SEND_COMPROVANT": {
+      "TITLE": "Envie o seu comprovante disponibilizar a quadra!",
+      "CHOOSE_IMAGE": "Escolha a imagem",
+      "SEND": "Enviar",
+      "SUCCESS": "Voucher enviado com sucesso.\n Aguarde a confirmação do proprietário",
+      "IMAGE": "Escolha uma imagem"
+    },
+    "PAY": {
+      "TITLE": "Para confirmar o aluguel, copie o código PIX abaixo e efetue o pagamento.",
+      "LOADING": "Carregando pix..."
+    },
+    "CHART": {
+      "TITLE": "Gráfico da pontuação de suas quadras",
+      "BETTER_WORST": "Gráfico da quadra com melhor/pior avaliação",
+      "MONTH": "escolha um mês",
+      "NOT_LOCATOR": "Ops, esta tela é apenas para locatários",
+      "BY_MONTH": "(por mês)"
+    },
+    "PLACES": {
+      "BASIC": "Quadras disponíveis",
+      "LOCATOR": "Suas quadras",
+      "EMPTY_FIELDS": "Escolha a hora, dia da semana ou data",
+      "ALREADY_RENTED": "Esta data já está alugada, tente outra",
+      "HOURLY_RATE": "Valor hora",
+      "OPEN": "Aberto de segunda a sexta-feira \nnos seguintes horários",
+      "CHOOSE_DAY": "Escolha o dia",
+      "CONFIRM": "Confirmar",
+      "CANCEL": "Cancelar",
+      "LOADING": "Carregando...",
+      "DELETE": "Deletar quadra",
+      "MAKE_RESERVATION": "Fazer uma reserva",
+      "SUCCESS": "Quadra reservada com sucesso!",
+      "AWAIT_CONFIRMATION": "Quando confirmado pelo locador, você estará apto para utilizar a quadra",
+      "GO_BACK": "Voltar para Home",
+      "TIME": "horário",
+      "NEW_PLACE": "Nova quadra",
+      "NAME": "Nome",
+      "ADDRESS": "Endereço",
+      "TIME_VALUE": "Valor hora",
+      "IMPORT_IMAGE": "Importar imagem da quadra",
+      "MAX_HOUR": "Disponibilizar horários: Max 20",
+      "NEW_HOUR": "Nova hora",
+      "ADD": "Adicionar quadra",
+      "FILL_FIELDS": "Preencha todos os campos",
+      "TIME_LIMIT": "Tempo limite atingido",
+      "EDIT_ALL": "Edite todos os seus agendamentos para poder adicionar um novo"
+    },
+    "PROFILE": {
+      "EDIT": "Editar sua conta",
+      "NAME": "digite seu name",
+      "ACTUAL_PASSWORD": "Senha atual",
+      "NEW_PASSWORD": "Nova senha",
+      "SAVE": "Salvar alterações",
+      "EXIT": "Sair",
+      "DELETE": "Deletar conta",
+      "ERRORS": {
+        "ACTUAL_PASSWORD": "Digite sua senha atual",
+        "SHORT_PASSWORD": "Nova senha muito curta",
+        "SUCCESS": "Dados alterados com sucesso!",
+        "CHANGE": "Não foi possível alterar os seus dados. Tente novamente!",
+        "EXIT": "Não foi possível sair",
+        "DELETE_ACCOUNT": "Não é possível excluir sua conta"
+      }
+    }
+  }
+}

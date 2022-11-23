@@ -22,5 +22,8 @@ export const RouteNames = {
       NEW_PLACE: "NEW_PLACE",
       PLACE_DETAILS: "PLACE_DETAILS",
     },
+    CHART: {
+      ROOT: "CHART",
+    },
   },
 } as const;

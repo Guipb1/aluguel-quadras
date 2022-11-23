@@ -29,9 +29,11 @@ import { useNavigation } from "@react-navigation/native";
 import { firestoreInstance } from "../../config/firebase";
 import useAuthContext from "../../hooks/useAuthContext";
 
-// import { Container } from './styles';
+import "../../utils/i18n/i18n";
+import { useTranslation } from "react-i18next";
 
 const Places: React.FC = () => {
+  const { t } = useTranslation();
   const theme = useColorScheme();
   const { navigate } = useNavigation();
   const { user } = useAuthContext();
@@ -85,8 +87,8 @@ const Places: React.FC = () => {
                 }
               >
                 {user?.type === "LOCATOR"
-                  ? "Suas quadras"
-                  : "Quadras disponiveis"}
+                  ? t("PLACES.LOCATOR")
+                  : t("PLACES.BASIC")}
               </Text>
             </View>
           )}

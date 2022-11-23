@@ -42,13 +42,17 @@ import {
   sendAvaliation,
 } from "../../services/placeService";
 
+import "../../utils/i18n/i18n";
+import { useTranslation } from "react-i18next";
+
 const Home: React.FC = () => {
+  const { t } = useTranslation();
   const theme = useColorScheme();
   const { navigate } = useNavigation();
   const { user } = useAuthContext();
   const [pending, setPending] = useState([]);
   const [approved, setApproved] = useState([]);
-  const [item, setItem] = useState<Rent>();
+  const [item, setItem] = useState<any>();
   const [placesPending, setPlacesPending] = useState<any[]>();
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -101,12 +105,8 @@ const Home: React.FC = () => {
       const placesPending = [];
       snapshot.forEach((doc) => {
         if (doc.data().locatorId === user?.id) {
-          const placePending = {
-            ...doc.data(),
-            reserveId: doc.id,
-          };
-          if (doc.data().day?.status === "PENDENTE") {
-            placesPending.push(placePending);
+          if (doc.data().status === "PENDENTE") {
+            placesPending.push(doc.data());
           }
         }
       });
@@ -145,48 +145,19 @@ const Home: React.FC = () => {
     if (user?.type === "LOCATOR") {
       getPendingsPlaces();
     } else if (user?.type === "BASIC") {
-      setLoading(true);
-      const allPlaces = query(collection(firestoreInstance, "places"));
-      const listner = onSnapshot(allPlaces, (snapshot) => {
-        const arrayPending: Rent[] = [];
-        const arrayApproved: Rent[] = [];
+      const allReserves = query(collection(firestoreInstance, "reserves"));
+
+      const listner = onSnapshot(allReserves, (snapshot) => {
+        const arrayPending: any[] = [];
+        const arrayApproved: any[] = [];
         snapshot.forEach((doc) => {
-          doc.data().availableTimes?.forEach((availableTime) => {
-            availableTime.days?.forEach((day: Days) => {
-              if (day.userId) {
-                if (day.userId === user?.id) {
-                  if (day.status === "PENDENTE") {
-                    arrayPending.push({
-                      placeId: doc.id,
-                      address: doc.data().address,
-                      hourValue: doc.data().hourValue,
-                      name: doc.data().name,
-                      locatorId: doc.data().user,
-                      initialTime: availableTime.initialTime,
-                      finalTime: availableTime.finalTime,
-                      availableTimeId: availableTime.id,
-                      day: day,
-                      imageUrl: doc.data().imageUrl,
-                    });
-                  } else if (day.status === "APROVADO") {
-                    arrayApproved.push({
-                      placeId: doc.id,
-                      address: doc.data().address,
-                      hourValue: doc.data().hourValue,
-                      name: doc.data().name,
-                      locatorId: doc.data().user,
-                      initialTime: availableTime.initialTime,
-                      finalTime: availableTime.finalTime,
-                      availableTimeId: availableTime.id,
-                      day: day,
-                      imageUrl: doc.data().imageUrl,
-                    });
-                  }
-                }
-                snapshot;
-              }
-            });
-          });
+          if (doc.data().user?.id === user?.id) {
+            if (doc.data().status === "PENDENTE") {
+              arrayPending.push(doc.data());
+            } else if (doc.data().status === "APROVADO") {
+              arrayApproved.push(doc.data());
+            }
+          }
         });
 
         setPending(arrayPending);
@@ -228,7 +199,7 @@ const Home: React.FC = () => {
 
     return (
       <View style={[styles.marginHorizontal, styles.marginVertical]}>
-        <Text style={styles.textBetterPlaces}>Melhores quadras</Text>
+        <Text style={styles.textBetterPlaces}>{t("HOME.BETTER_PLACES")}</Text>
         <FlatList
           keyExtractor={(item, index) => String(index)}
           horizontal
@@ -252,10 +223,12 @@ const Home: React.FC = () => {
         <Text>Carregando...</Text>
       ) : user?.type === "BASIC" ? (
         <>
-          {user?.reserve ? (
+          {pending.length > 0 || approved.length > 0 ? (
             <>
               <View style={[styles.marginHorizontal, styles.marginVertical]}>
-                <Text style={styles.textPending}>Quadras pendentes</Text>
+                <Text style={styles.textPending}>
+                  {t("HOME.PENDING_COURTS")}
+                </Text>
                 <FlatList
                   keyExtractor={(item, index) => String(index)}
                   horizontal
@@ -272,7 +245,9 @@ const Home: React.FC = () => {
                 />
               </View>
               <View style={[[styles.marginHorizontal, styles.marginVertical]]}>
-                <Text style={styles.textApproved}>Quadras aprovadas</Text>
+                <Text style={styles.textApproved}>
+                  {t("HOME.APPROVED_COURTS")}
+                </Text>
                 <FlatList
                   keyExtractor={(item, index) => String(index)}
                   horizontal
@@ -299,7 +274,7 @@ const Home: React.FC = () => {
                       : stylesDark.textImageWithoutReserve
                   }
                 >
-                  Opa, parece que você ainda não alugou nenhuma quadra
+                  {t("HOME.NOT_RESERVE")}
                 </Text>
                 <Text
                   style={
@@ -308,7 +283,7 @@ const Home: React.FC = () => {
                       : stylesDark.textImageWithoutReserve
                   }
                 >
-                  Alugue uma quadra agora mesmo!
+                  {t("HOME.RESERVE_NOW")}
                 </Text>
               </View>
               <Image
@@ -322,7 +297,9 @@ const Home: React.FC = () => {
       ) : (
         <>
           <View style={[[styles.marginHorizontal, styles.marginVertical]]}>
-            <Text style={styles.textApproved}>Comprovantes de pagamentos</Text>
+            <Text style={styles.textApproved}>
+              {t("HOME.PAYMENT_RECEIPTS")}
+            </Text>
             <FlatList
               keyExtractor={(item, index) => String(index)}
               horizontal
@@ -420,7 +397,7 @@ const Home: React.FC = () => {
                       : stylesDark.textThemeDarkOrLight
                   }
                 >
-                  Você alugou para o horário/dia de
+                  {t("HOME.RENTED")}
                 </Text>
                 <Text
                   style={
@@ -429,11 +406,12 @@ const Home: React.FC = () => {
                       : stylesDark.valueHourText
                   }
                 >
-                  {item?.initialTime} às {item?.finalTime}, para{" "}
-                  {item?.day?.day}-feira
+                  {item?.selectedTime.initialTime} {t("HOME.AT")}{" "}
+                  {item?.selectedTime.finalTime}, {t("HOME.DAY")}{" "}
+                  {item?.dayOfWeek}
                 </Text>
               </View>
-              {item?.day?.status === "APROVADO" && (
+              {item?.status === "APROVADO" && (
                 <>
                   <Text
                     style={
@@ -442,7 +420,7 @@ const Home: React.FC = () => {
                         : stylesDark.evaluatePlace
                     }
                   >
-                    Avaliar quadra
+                    {t("HOME.EVALUATE_COURT")}
                   </Text>
                   <AirbnbRating
                     count={5}
@@ -454,10 +432,12 @@ const Home: React.FC = () => {
                     starContainerStyle={{ marginTop: -40 }}
                   />
                   {isSendAvaliation ? (
-                    <Text style={styles.sendingRequest}>Enviando...</Text>
+                    <Text style={styles.sendingRequest}>
+                      {t("HOME.SENDING")}
+                    </Text>
                   ) : (
                     <Text onPress={() => setRate()} style={styles.sendRequest}>
-                      enviar avaliação
+                      {t("HOME.SEND_REVIEW")}
                     </Text>
                   )}
                 </>
@@ -467,7 +447,7 @@ const Home: React.FC = () => {
               style={{
                 ...styles.viewStatus,
                 justifyContent:
-                  item?.day?.status === "PENDENTE"
+                  item?.status === "PENDENTE"
                     ? "space-between"
                     : "space-evenly",
               }}
@@ -479,20 +459,20 @@ const Home: React.FC = () => {
                     : stylesDark.textThemeDarkOrLight
                 }
               >
-                status de pagamento
+                {t("HOME.PAYMENT_STATUS")}
               </Text>
               <View
                 style={{
                   ...styles.viewTextStatus,
                   backgroundColor:
-                    item?.day?.status === "PENDENTE"
+                    item?.status === "PENDENTE"
                       ? Colors.PENDING
                       : Colors.PRIMARY,
                 }}
               >
-                <Text style={styles.textStatus}>{item?.day?.status}</Text>
+                <Text style={styles.textStatus}>{item?.status}</Text>
               </View>
-              {item?.day?.status === "PENDENTE" && (
+              {item?.status === "PENDENTE" && (
                 <View style={styles.viewButton}>
                   <TouchableOpacity
                     style={{
@@ -505,7 +485,7 @@ const Home: React.FC = () => {
                     }}
                   >
                     <Text style={styles.bookingButtonText}>
-                      Enviar comprovante
+                      {t("HOME.SEND_RECEIPT")}
                     </Text>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -519,7 +499,7 @@ const Home: React.FC = () => {
                     }}
                   >
                     <Text style={styles.bookingButtonText}>
-                      Realizar pagamento
+                      {t("HOME.MAKE_PAYMENT")}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -569,7 +549,7 @@ const Home: React.FC = () => {
                       : stylesDark.textThemeDarkOrLight
                   }
                 >
-                  Esta quadra foi reservada para o horário/dia de
+                  {t("HOME.PLACE_RESERVED")}
                 </Text>
                 <Text
                   style={
@@ -578,8 +558,9 @@ const Home: React.FC = () => {
                       : stylesDark.valueHourText
                   }
                 >
-                  {item?.initialTime} às {item?.finalTime}, para{" "}
-                  {item?.day?.day}-feira
+                  {item?.selectedTime.initialTime} {t("HOME.AT")}{" "}
+                  {item?.selectedTime.finalTime}, {t("HOME.DAY")}{" "}
+                  {item?.dayOfWeek}
                 </Text>
               </View>
               <View style={styles.infoContainer}>
@@ -591,12 +572,24 @@ const Home: React.FC = () => {
                       : stylesDark.textThemeDarkOrLight,
                   ]}
                 >
-                  comprovante de pagamento
+                  {t("HOME.PAYMENT_VOUCHER")}
                 </Text>
-                <Image
-                  source={{ uri: item?.image }}
-                  style={styles.imageComprovant}
-                />
+                {item?.comprovant ? (
+                  <Image
+                    source={{ uri: item?.comprovant }}
+                    style={styles.imageComprovant}
+                  />
+                ) : (
+                  <Text
+                    style={
+                      theme === "light"
+                        ? styles.notSendComprovant
+                        : stylesDark.notSendComprovant
+                    }
+                  >
+                    {t("HOME.NOT_SEND")}
+                  </Text>
+                )}
               </View>
             </View>
             <TouchableOpacity
@@ -609,7 +602,10 @@ const Home: React.FC = () => {
               {confirmPlace ? (
                 <ActivityIndicator color={Colors.TEXT_SECONDARY} size={32} />
               ) : (
-                <Text style={styles.bookingButtonText}>Liberar quadra</Text>
+                <Text style={styles.bookingButtonText}>
+                  {" "}
+                  {t("HOME.RELEASE_PLACE")}
+                </Text>
               )}
             </TouchableOpacity>
           </View>

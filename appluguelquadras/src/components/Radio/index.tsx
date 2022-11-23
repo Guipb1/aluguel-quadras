@@ -5,6 +5,9 @@ import { TimeType } from "../../@types";
 import styles from "./styles";
 import stylesDark from "./stylesDark";
 
+import "../../utils/i18n/i18n";
+import { useTranslation } from "react-i18next";
+
 type Props = {
   array: any[];
   valueProp: string;
@@ -12,6 +15,7 @@ type Props = {
 };
 
 const Radio = (props: Props) => {
+  const { t } = useTranslation();
   const theme = useColorScheme();
   const { valueProp, handleValue, array } = props;
 
@@ -28,7 +32,7 @@ const Radio = (props: Props) => {
                   theme === "light" ? styles.itemValue : stylesDark.itemValue
                 }
               >
-                {Number(item.id) + 1}. horário
+                {Number(item.id) + 1}. {t("PLACES.TIME")}
               </Text>
             </View>
             <TouchableOpacity

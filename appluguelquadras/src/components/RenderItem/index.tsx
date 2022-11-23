@@ -34,7 +34,7 @@ export default function SliderItem({
         }
         numberOfLines={1}
       >
-        {data.day?.day}
+        {data?.dayOfWeek}
       </Text>
       <Text
         style={
@@ -44,7 +44,7 @@ export default function SliderItem({
         }
         numberOfLines={1}
       >
-        {data?.initialTime} às {data?.finalTime}
+        {data?.selectedTime?.initialTime} às {data?.selectedTime?.finalTime}
       </Text>
     </TouchableOpacity>
   );

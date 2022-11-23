@@ -20,8 +20,12 @@ import { RouteNames } from "../../constants/routeNames";
 import useAuthContext from "../../hooks/useAuthContext";
 import { Colors } from "../../constants/colors";
 import TextInput from "../../components/TextInput";
+import "../../utils/i18n/i18n";
+
+import { useTranslation } from "react-i18next";
 
 export default function Login() {
+  const { t, i18n } = useTranslation();
   const theme = useColorScheme();
   const { navigate } = useNavigation();
 
@@ -33,6 +37,17 @@ export default function Login() {
   //tentando logar em branco
   const [errorLogin, setErrorLogin] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const changeLanguage = (value) => {
+    i18n
+      .changeLanguage(value)
+      .then(() => {
+        Alert.alert(t("LOGIN.CHANGE_LGN"));
+      })
+      .catch((error: any) => {
+        console.log("Change language error: ", error);
+      });
+  };
 
   //funcao de login
   const handleLogin = async () => {
@@ -49,10 +64,32 @@ export default function Login() {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={theme === "light" ? styles.container : stylesDark.container}
       >
+        <View style={styles.viewButtonLgn}>
+          <TouchableOpacity
+            style={styles.langButton}
+            onPress={() => changeLanguage("en")}
+          >
+            <Text
+              style={theme === "light" ? styles.langText : stylesDark.langText}
+            >
+              EN
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.langButton}
+            onPress={() => changeLanguage("pt")}
+          >
+            <Text
+              style={theme === "light" ? styles.langText : stylesDark.langText}
+            >
+              BR
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.title}>Quadras de Aluguel</Text>
         <View style={styles.separator}>
           <TextInput
-            title="Informe seu e-mail"
+            title={t("LOGIN.EMAIL")}
             keyboardType="email-address"
             onFocus={() => setErrorLogin(false)}
             onChangeText={(text) => {
@@ -64,7 +101,7 @@ export default function Login() {
         <View style={styles.separator}>
           <TextInput
             secureTextEntry={showPassword ? false : true}
-            title="Informe sua senha"
+            title={t("LOGIN.PASSWORD")}
             keyboardType="default"
             onFocus={() => setErrorLogin(false)}
             onChangeText={(text) => setPassword(text)}
@@ -88,7 +125,7 @@ export default function Login() {
               size={24}
               color="#bdbdbd"
             />
-            <Text style={styles.warningAlert}>Email ou senha invalidos</Text>
+            <Text style={styles.warningAlert}>t('LOGIN.ERROR_LOGIN')</Text>
           </View>
         )}
         <TouchableOpacity style={[styles.buttonLogin]} onPress={handleLogin}>
@@ -103,13 +140,13 @@ export default function Login() {
             theme === "light" ? styles.registration : stylesDark.registration
           }
         >
-          Não tem um cadastro?
+          {t("LOGIN.REGISTER")}
           <Text
             style={styles.linkSubscribe}
             onPress={() => navigate(RouteNames.PUBLIC.NEW_ACCOUNT_TYPE)}
           >
             {" "}
-            Se cadastre agora....
+            {t("LOGIN.REGISTER_NOW")}
           </Text>
         </Text>
         <View style={{ height: 100 }} />

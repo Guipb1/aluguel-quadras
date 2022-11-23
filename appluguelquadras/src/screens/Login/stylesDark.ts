@@ -13,6 +13,11 @@ const stylesDark = StyleSheet.create({
     marginTop: 20,
     color: Colors.PAPER,
   },
+  langText: {
+    marginRight: 4,
+    marginLeft: 4,
+    color: "#FFF",
+  },
 });
 
 export default stylesDark;

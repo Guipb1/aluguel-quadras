@@ -9,7 +9,6 @@ export type TimeType = {
   id?: string;
   initialTime: string;
   finalTime: string;
-  days: Days[];
 };
 
 export type Rent = {
@@ -25,9 +24,11 @@ export type Rent = {
   locatorId: string;
   reserveId?: string;
   imageUrl?: string;
+  availableTime?: any;
 };
 
 export type Rating = {
   userId: string;
   rate: number;
+  month: string;
 };

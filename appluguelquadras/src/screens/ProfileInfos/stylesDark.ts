@@ -11,6 +11,11 @@ const stylesDark = StyleSheet.create({
     fontWeight: "bold",
     color: Colors.PAPER,
   },
+  langText: {
+    marginRight: 4,
+    marginLeft: 4,
+    color: "#FFF",
+  },
 });
 
 export default stylesDark;
