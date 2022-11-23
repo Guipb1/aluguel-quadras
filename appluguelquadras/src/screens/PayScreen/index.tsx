@@ -5,14 +5,15 @@ import { HomeStackParamList } from "../../routes/types";
 
 import styles from "./styles";
 import stylesDark from "./stylesDark";
-import { doc, getDoc } from "firebase/firestore";
-import { firestoreInstance } from "../../config/firebase";
 import { getPixService } from "../../services/userService";
+import "../../utils/i18n/i18n";
+import { useTranslation } from "react-i18next";
 
 const Pay = () => {
+  const { t } = useTranslation();
   const theme = useColorScheme();
   const { params } = useRoute<RouteProp<HomeStackParamList>>();
-  const [pix, setPix] = useState("Carregando pix...");
+  const [pix, setPix] = useState(t("PAY.LOADING"));
 
   const getPix = async () => {
     try {
@@ -41,8 +42,7 @@ const Pay = () => {
             theme === "light" ? styles.textConfirm : stylesDark.textConfirm
           }
         >
-          Para confirmar o aluguel, copie o código PIX abaixo e realize o
-          pagamento.
+          {t("PAY.TITLE")}
         </Text>
         <TextInput
           style={theme === "light" ? styles.textKeyPix : stylesDark.textKeyPix}

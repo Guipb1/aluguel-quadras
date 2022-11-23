@@ -24,7 +24,11 @@ import { TimeType } from "../../@types";
 import TimeChip from "../../components/TimeChip";
 import { addPlace } from "../../services/placeService";
 
+import "../../utils/i18n/i18n";
+import { useTranslation } from "react-i18next";
+
 const NewPlace: React.FC = () => {
+  const { t } = useTranslation();
   const theme = useColorScheme();
   const { goBack } = useNavigation();
   const { user } = useAuthContext();
@@ -32,6 +36,7 @@ const NewPlace: React.FC = () => {
   const [address, setAddress] = useState("");
   const [hourValue, setHourValue] = useState("");
   const [image, setImage] = useState(null);
+  const [newTime, setNewTime] = useState(null);
 
   const [availableTimes, setAvailableTimes] = useState<TimeType[]>([]);
 
@@ -72,7 +77,7 @@ const NewPlace: React.FC = () => {
         ) &&
         availableTimes[availableTimes.length - 1].finalTime.startsWith("00"))
     ) {
-      Alert.alert("Preencha todos os campos");
+      Alert.alert(t("PLACES.FILL_FIELDS"));
       return;
     }
     try {
@@ -116,27 +121,20 @@ const NewPlace: React.FC = () => {
   };
   const handleAddTime = () => {
     if (availableTimes.length > 20) {
-      Alert.alert("Limite de horários atingido");
+      Alert.alert(t("PLACES.TIME_LIMIT"));
       return;
     } else if (
       availableTimes.length &&
       availableTimes[availableTimes.length - 1].initialTime.startsWith("00") &&
       availableTimes[availableTimes.length - 1].finalTime.startsWith("00")
     ) {
-      Alert.alert("Edite todos os seus horários para poder incluir um novo");
+      Alert.alert(t("PLACES.EDIT_ALL"));
       return;
     }
     const newTime = {
       id: String(availableTimes.length),
       initialTime: "00:00",
       finalTime: "00:00",
-      days: [
-        { day: "Segunda", isRented: false },
-        { day: "Terça", isRented: false },
-        { day: "Quarta", isRented: false },
-        { day: "Quinta", isRented: false },
-        { day: "Sexta", isRented: false },
-      ],
     };
     setAvailableTimes((oldTimes) => [...oldTimes, newTime]);
   };
@@ -187,7 +185,7 @@ const NewPlace: React.FC = () => {
             theme === "light" ? styles.headerTitle : stylesDark.headerTitle
           }
         >
-          Nova quadra
+          {t("PLACES.NEW_PLACE")}
         </Text>
         <TouchableOpacity
           style={styles.headerCloseButton}
@@ -204,7 +202,7 @@ const NewPlace: React.FC = () => {
         <View style={styles.content}>
           <View style={styles.separator}>
             <TextInput
-              title="Nome"
+              title={t("PLACES.NAME")}
               keyboardType="default"
               onChangeText={(text) => setName(text)}
               value={name}
@@ -212,7 +210,7 @@ const NewPlace: React.FC = () => {
           </View>
           <View style={styles.separator}>
             <TextInput
-              title="Endereço"
+              title={t("PLACES.ADDRESS")}
               keyboardType="default"
               onChangeText={(text) => setAddress(text)}
               value={address}
@@ -220,14 +218,14 @@ const NewPlace: React.FC = () => {
           </View>
           <View style={styles.separator}>
             <TextInput
-              title="Valor da hora"
+              title={t("PLACES.TIME_VALUE")}
               keyboardType="decimal-pad"
               onChangeText={(text) => setHourValue(text)}
               value={hourValue}
             />
           </View>
           <TouchableOpacity style={styles.pickImage} onPress={pickImage}>
-            <Text>Importar imagem da quadra</Text>
+            <Text>{t("PLACES.IMPORT_IMAGE")}</Text>
           </TouchableOpacity>
           {image && (
             <View style={styles.viewImage}>
@@ -245,13 +243,13 @@ const NewPlace: React.FC = () => {
                   : stylesDark.addTimesTitle
               }
             >
-              Disponibilize horários: Máx 20
+              {t("PLACES.MAX_HOUR")}
             </Text>
             <TouchableOpacity
               style={styles.addTimesButton}
               onPress={handleAddTime}
             >
-              <Text>Novo horário</Text>
+              <Text>{t("PLACES.NEW_HOUR")}</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.separator}>
@@ -280,7 +278,7 @@ const NewPlace: React.FC = () => {
           activeOpacity={0.8}
           onPress={handleAddPlace}
         >
-          <Text style={styles.confirmButtonText}>Adicionar</Text>
+          <Text style={styles.confirmButtonText}>{t("PLACES.ADD")}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>

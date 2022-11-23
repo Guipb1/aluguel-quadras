@@ -143,6 +143,10 @@ const styles = StyleSheet.create({
   textThemeDarkOrLight: {
     color: Colors.TEXT_PRIMARY,
   },
+  notSendComprovant: {
+    color: Colors.TEXT_PRIMARY,
+    marginTop: 20
+  },
   evaluatePlace: {
     marginTop: 30,
     textAlign: "center",

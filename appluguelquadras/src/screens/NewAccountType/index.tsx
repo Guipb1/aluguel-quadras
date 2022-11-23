@@ -5,8 +5,11 @@ import { RouteNames } from "../../constants/routeNames";
 
 import styles from "./styles";
 import stylesDark from "./stylesDark";
+import "../../utils/i18n/i18n";
+import { useTranslation } from "react-i18next";
 
 export default function NewAccountType() {
+  const { t } = useTranslation();
   const theme = useColorScheme();
   const { navigate } = useNavigation();
 
@@ -16,14 +19,14 @@ export default function NewAccountType() {
         style={styles.btnLocador}
         onPress={() => navigate(RouteNames.PUBLIC.NEW_ACCOUNT_BASIC)}
       >
-        <Text style={styles.titleLocador}>QUERO JOGAR</Text>
+        <Text style={styles.titleLocador}>{t("REGISTER.BASIC")}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.btnLocatario}
         onPress={() => navigate(RouteNames.PUBLIC.NEW_ACCOUNT_LOCATOR)}
       >
-        <Text style={styles.titleLocatario}>QUERO ALUGAR</Text>
+        <Text style={styles.titleLocatario}>{t("REGISTER.LOCATOR")}</Text>
       </TouchableOpacity>
     </View>
   );

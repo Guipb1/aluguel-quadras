@@ -8,7 +8,7 @@ import styles from "./styles";
 export type Days = {
   day: string;
   isRented: boolean;
-}
+};
 
 export type PlaceItemProps = {
   id: string;
@@ -19,6 +19,7 @@ export type PlaceItemProps = {
   user?: string;
   rating?: Rating[];
   days?: Days[];
+  availableTimeId: any;
 };
 
 const PlaceItem: React.FC<PlaceItemProps> = ({
@@ -27,6 +28,7 @@ const PlaceItem: React.FC<PlaceItemProps> = ({
   address,
   imageUrl,
   hourValue,
+  availableTimeId,
 }) => {
   const { navigate } = useNavigation();
   return (
@@ -36,6 +38,7 @@ const PlaceItem: React.FC<PlaceItemProps> = ({
       onPress={() =>
         navigate(RouteNames.PRIVATE.PLACES.PLACE_DETAILS, {
           placeId: id,
+          availableTimeId,
         })
       }
     >

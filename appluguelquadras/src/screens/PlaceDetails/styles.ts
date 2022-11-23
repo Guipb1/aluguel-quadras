@@ -51,6 +51,16 @@ const styles = StyleSheet.create({
   footer: {
     marginBottom: 100,
   },
+  buttonDay: {
+    alignSelf: "stretch",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 16,
+    marginHorizontal: 50,
+    borderRadius: 8,
+    backgroundColor: Colors.PRIMARY,
+    marginBottom: 20,
+  },
   bookingButton: {
     alignSelf: "stretch",
     justifyContent: "center",

@@ -25,6 +25,9 @@ export type HomeStackParamList = {
   [RouteNames.PRIVATE.HOME.PAY]: { item: any };
   [RouteNames.PRIVATE.HOME.SEND_COMPROVANT]: { item: any };
 };
+export type ChartStackParamList = {
+  [RouteNames.PRIVATE.CHART.ROOT]: undefined;
+};
 export type PlaceStackParamList = {
   [RouteNames.PRIVATE.PLACES.ROOT]: undefined;
   [RouteNames.PRIVATE.PLACES.NEW_PLACE]: undefined;
@@ -40,6 +43,7 @@ export type PublicStackScreenProps<T extends keyof PublicStackParamList> =
 export type PrivateTabsParamList = {
   [RouteNames.PRIVATE.HOME.ROOT]: undefined;
   [RouteNames.PRIVATE.PLACES.ROOT]: undefined;
+  [RouteNames.PRIVATE.CHART.ROOT]: undefined;
 };
 
 export type PrivateTabsRouteProp = RouteProp<PrivateTabsParamList>;

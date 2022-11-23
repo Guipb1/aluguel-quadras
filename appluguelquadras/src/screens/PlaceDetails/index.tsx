@@ -1,5 +1,14 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  updateDoc,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -29,26 +38,36 @@ import styles from "./styles";
 import { Colors } from "../../constants/colors";
 import stylesDark from "./stylesDark";
 import { deletePlace, handleReserve } from "../../services/placeService";
+import moment from "moment";
+import "../../utils/i18n/i18n";
+import { useTranslation } from "react-i18next";
 
 export type PlaceDetailProps = PlaceItemProps & {
   availableTimes: TimeType[];
 };
 
 const PlaceDetails: React.FC = () => {
+  const { t } = useTranslation();
   const theme = useColorScheme();
   const { params } = useRoute<RouteProp<PlaceStackParamList>>();
   const [schedule, setSchedule] = useState("");
-  const [day, setDay] = useState("");
-  const [arrayDays, setArrayDays] = useState([]);
+  const [selectedTime, setSelectedTime] = useState<TimeType>();
+  const [dayOfWeek, setDayOfWeek] = useState("");
   const { navigate, goBack } = useNavigation();
   const { user, setUser } = useAuthContext();
   const [loading, setLoading] = useState(false);
   const [register, setRegister] = useState(false);
-  const [showDays, setShowDays] = useState(false);
+  const [reserveByFirebase, setReserveByFirebase] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [placeData, setPlaceData] = useState<PlaceDetailProps | undefined>(
     undefined
   );
+  const [initialTimePickerVisible, setInitialTimePickerVisible] =
+    useState(false);
+
+  const hideDatePicker = () => {
+    setInitialTimePickerVisible(false);
+  };
 
   useEffect(() => {
     (async () => {
@@ -65,23 +84,57 @@ const PlaceDetails: React.FC = () => {
     navigate(RouteNames.PRIVATE.HOME.PROFILE_INFOS);
   };
 
+  const getAllReserves = async () => {
+    try {
+      const allReserves = query(collection(firestoreInstance, "reserves"));
+
+      const listner = onSnapshot(allReserves, (snapshot) => {
+        const array: any[] = [];
+        snapshot.forEach((doc) => {
+          if (
+            doc.data().placeId === params.placeId &&
+            doc.data().schedule === schedule &&
+            doc.data().dayOfWeek === dayOfWeek
+          ) {
+            array.push(doc.data());
+          }
+        });
+
+        setReserveByFirebase(array);
+      });
+
+      return listner;
+    } catch (error: any) {
+      console.log("Error listner: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getAllReserves();
+  }, [schedule, dayOfWeek]);
+
   const handleBooking = async () => {
     try {
       setRegister(true);
-      if (day === "" || schedule === "") {
-        Alert.alert("Escolha um horário e/ou o dia");
+      if (schedule === "" || dayOfWeek === "") {
+        Alert.alert(t("PLACES.EMPTY_FIELDS"));
         return;
       }
-      const userUpdated = await handleReserve(
-        day,
-        schedule,
-        user,
-        params.placeId,
-        placeData
-      );
+      if (reserveByFirebase.length > 0) {
+        Alert.alert(t("PLACES.ALREADY_RENTED"));
+        return;
+      } else {
+        await handleReserve(
+          schedule,
+          user,
+          params.placeId,
+          placeData,
+          dayOfWeek,
+          selectedTime
+        );
 
-      setUser(userUpdated);
-      setModalVisible(true);
+        setModalVisible(true);
+      }
     } catch (error: any) {
       console.log("error: ", error);
     } finally {
@@ -94,22 +147,14 @@ const PlaceDetails: React.FC = () => {
     goBack();
   };
 
-  const handleValue = (value: string) => {
-    setSchedule(value);
-    const placesFiltered = placeData.availableTimes.filter(
-      (availableTime) => availableTime.id === value
-    );
-    const filteredDays = placesFiltered.map(
-      (placeFiltered) => placeFiltered.days
-    );
-    const [days] = filteredDays;
-    const daysIsNotRented = days.filter((day) => !day.isRented);
-    setArrayDays(daysIsNotRented);
-    setShowDays(true);
+  const handleDate = (date: Date) => {
+    const dateFormatted = moment(date);
+    setDayOfWeek(dateFormatted.format("D/MM/YYYY"));
   };
 
-  const handleDay = (value: string) => {
-    setDay(value);
+  const handleValue = (value: string) => {
+    setSchedule(value);
+    setSelectedTime(placeData?.availableTimes[Number(value)]);
   };
 
   return (
@@ -147,7 +192,7 @@ const PlaceDetails: React.FC = () => {
                   : stylesDark.valueHourLabel
               }
             >
-              Valor hora
+              {t("PLACES.HOURLY_RATE")}
             </Text>
             <Text
               style={
@@ -165,7 +210,7 @@ const PlaceDetails: React.FC = () => {
                   : stylesDark.timesTitleText
               }
             >
-              {`Aberto de segunda a sexta \nnos seguintes horarios`}
+              {t("PLACES.OPEN")}
             </Text>
             {placeData?.availableTimes.map((item) => (
               <View style={styles.separator}>
@@ -179,22 +224,38 @@ const PlaceDetails: React.FC = () => {
           </View>
           {user?.type === "BASIC" ? (
             loading ? (
-              <View style={styles.radios}>
-                <Radio
-                  handleValue={handleValue}
-                  valueProp={schedule}
-                  array={placeData?.availableTimes}
-                />
-                {showDays && (
-                  <RadioDays
-                    handleValue={handleDay}
-                    valueProp={day}
-                    array={arrayDays}
+              <>
+                <View style={styles.radios}>
+                  <Radio
+                    handleValue={handleValue}
+                    valueProp={schedule}
+                    array={placeData?.availableTimes}
                   />
-                )}
-              </View>
+                  <TouchableOpacity
+                    style={styles.buttonDay}
+                    onPress={() => setInitialTimePickerVisible(true)}
+                  >
+                    <Text style={styles.bookingButtonText}>
+                      {dayOfWeek === "" ? t("PLACES.CHOOSE_DAY") : dayOfWeek}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <DateTimePickerModal
+                  isDarkModeEnabled
+                  isVisible={initialTimePickerVisible}
+                  mode="date"
+                  onConfirm={(date) => {
+                    handleDate(date);
+                    hideDatePicker();
+                  }}
+                  onCancel={hideDatePicker}
+                  cancelTextIOS={t("PLACES.CANCEL")}
+                  confirmTextIOS={t("PLACES.CONFIRM")}
+                  minimumDate={new Date()}
+                />
+              </>
             ) : (
-              <Text>Carregando...</Text>
+              <Text>{t("PLACES.LOADING")}</Text>
             )
           ) : null}
         </View>
@@ -204,7 +265,9 @@ const PlaceDetails: React.FC = () => {
               onPress={handleDeletePlace}
               style={styles.deletePlaceButton}
             >
-              <Text style={styles.deletePlaceButtonText}>Deletar quadra</Text>
+              <Text style={styles.deletePlaceButtonText}>
+                {t("PLACES.DELETE")}
+              </Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
@@ -214,7 +277,9 @@ const PlaceDetails: React.FC = () => {
               {register ? (
                 <ActivityIndicator color={Colors.TEXT_SECONDARY} size={32} />
               ) : (
-                <Text style={styles.bookingButtonText}>Fazer reserva</Text>
+                <Text style={styles.bookingButtonText}>
+                  {t("PLACES.MAKE_RESERVATION")}
+                </Text>
               )}
             </TouchableOpacity>
           )}
@@ -229,7 +294,7 @@ const PlaceDetails: React.FC = () => {
               theme === "light" ? styles.textReserved : stylesDark.textReserved
             }
           >
-            Quadra reservada com sucesso!
+            {t("PLACES.SUCCESS")}
           </Text>
           <View style={theme === "light" ? styles.viewPix : stylesDark.viewPix}>
             <Image
@@ -245,8 +310,7 @@ const PlaceDetails: React.FC = () => {
               theme === "light" ? styles.textLeased : stylesDark.textLeased
             }
           >
-            Quando confirmado pelo locador, você estará apto para utilizar a
-            quadra {placeData?.name}
+            {t("PLACES.AWAIT_CONFIRMATION")} {placeData?.name}
           </Text>
           <TouchableOpacity
             onPress={() => {
@@ -255,7 +319,7 @@ const PlaceDetails: React.FC = () => {
             }}
             style={styles.bookingButton}
           >
-            <Text style={styles.bookingButtonText}>Voltar para Home</Text>
+            <Text style={styles.bookingButtonText}>{t("PLACES.GO_BACK")}</Text>
           </TouchableOpacity>
         </View>
       </Modal>

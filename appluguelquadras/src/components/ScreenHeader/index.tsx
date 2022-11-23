@@ -16,11 +16,15 @@ export type ScreenHeaderProps = {
   imageOnly?: boolean;
 };
 
+import "../../utils/i18n/i18n";
+import { useTranslation } from "react-i18next";
+
 const ScreenHeader: React.FC<ScreenHeaderProps> = ({
   username,
   onPress = () => {},
   imageOnly,
 }) => {
+  const { t } = useTranslation();
   const theme = useColorScheme();
   const [formattedUsername, setFormattedUsername] = useState("");
   useEffect(() => {
@@ -44,7 +48,9 @@ const ScreenHeader: React.FC<ScreenHeaderProps> = ({
         <View>
           <Text
             style={theme === "light" ? styles.titleText : stylesDark.titleText}
-          >{`Olá, ${username}`}</Text>
+          >
+            {t("HOME.HELLO")} {username}
+          </Text>
         </View>
       )}
       <View>

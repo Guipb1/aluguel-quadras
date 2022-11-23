@@ -9,6 +9,7 @@ import { PrivateTabsParamList, PrivateTabsRouteProp } from "../types";
 
 import HomeRoutes from "./HomeRoutes";
 import PlacesRoutes from "./PlacesRoutes";
+import ChartRoutes from "./ChartRoutes";
 
 type HandleTabBarIconProps = {
   route: PrivateTabsRouteProp;
@@ -38,6 +39,14 @@ const PrivateRoutes = () => {
         return (
           <MaterialCommunityIcons
             name={focused ? "map-marker-radius" : "map-marker-radius-outline"}
+            size={focused ? 38 : 34}
+            color={color}
+          />
+        );
+      case RouteNames.PRIVATE.CHART.ROOT:
+        return (
+          <MaterialCommunityIcons
+            name={focused ? "chart-box" : "chart-box-outline"}
             size={focused ? 38 : 34}
             color={color}
           />
@@ -84,6 +93,10 @@ const PrivateRoutes = () => {
       }}
     >
       <Tabs.Screen name={RouteNames.PRIVATE.HOME.ROOT} component={HomeRoutes} />
+      <Tabs.Screen
+        name={RouteNames.PRIVATE.CHART.ROOT}
+        component={ChartRoutes}
+      />
       <Tabs.Screen
         name={RouteNames.PRIVATE.PLACES.ROOT}
         component={PlacesRoutes}

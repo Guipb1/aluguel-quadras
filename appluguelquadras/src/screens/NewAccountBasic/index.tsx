@@ -16,8 +16,11 @@ import { useNavigation } from "@react-navigation/native";
 import { RouteNames } from "../../constants/routeNames";
 import { registerUser } from "../../services/userService";
 import TextInput from "../../components/TextInput";
+import "../../utils/i18n/i18n";
+import { useTranslation } from "react-i18next";
 
 export default function NewAccountBasic() {
+  const { t } = useTranslation();
   const theme = useColorScheme();
   const { navigate } = useNavigation();
 
@@ -39,10 +42,10 @@ export default function NewAccountBasic() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={theme === "light" ? styles.container : stylesDark.container}
     >
-      <Text style={styles.title}>Criar nova conta</Text>
+      <Text style={styles.title}>{t("REGISTER.NEW_ACCOUNT")}</Text>
       <View style={styles.separator}>
         <TextInput
-          title="entre com seu nome"
+          title={t("REGISTER.NAME")}
           keyboardType="default"
           onChangeText={(text) => setName(text)}
           value={name}
@@ -50,7 +53,7 @@ export default function NewAccountBasic() {
       </View>
       <View style={styles.separator}>
         <TextInput
-          title="entre com seu email"
+          title={t("REGISTER.EMAIL")}
           keyboardType="email-address"
           onChangeText={(text) => setEmail(text)}
           value={email}
@@ -58,7 +61,7 @@ export default function NewAccountBasic() {
       </View>
       <View style={styles.separator}>
         <TextInput
-          title="entre com sua senha"
+          title={t("REGISTER.PASSWORD")}
           secureTextEntry={true}
           keyboardType="default"
           onChangeText={(text) => setPassword(text)}
@@ -81,11 +84,11 @@ export default function NewAccountBasic() {
         style={styles.buttonRegister}
         onPress={handleRegisterUser}
       >
-        <Text style={styles.textButtonRegister}>Registrar</Text>
+        <Text style={styles.textButtonRegister}>{t("REGISTER.REGISTER")}</Text>
       </TouchableOpacity>
 
       <Text style={theme === "light" ? styles.login : stylesDark.login}>
-        Voce já está registrado?
+        {t("REGISTER.NEW_ACCOUNT")}
         <Text
           style={styles.linkLogin}
           onPress={() => navigate(RouteNames.PUBLIC.LOGIN)}

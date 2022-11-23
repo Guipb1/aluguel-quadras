@@ -48,6 +48,10 @@ const stylesDark = StyleSheet.create({
   textThemeDarkOrLight: {
     color: Colors.PAPER,
   },
+  notSendComprovant: {
+    color: Colors.PAPER,
+    marginTop: 20,
+  },
   evaluatePlace: {
     marginTop: 30,
     textAlign: "center",
